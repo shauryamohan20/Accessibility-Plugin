@@ -11,6 +11,11 @@ A lightweight, secure WordPress accessibility plugin with a floating widget, mul
 > rm qudra-accesskit-wp/README.md
 > zip -r qudra-accesskit-wp.zip qudra-accesskit-wp/
 > ```
+
+## Preview
+
+![Qudra AccessKit WP panel open showing accessibility options](./preview.png)
+
 ---
 
 ## Features
