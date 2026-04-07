@@ -1,6 +1,6 @@
 # Qudra AccessKit WP
 
-A lightweight, secure WordPress accessibility plugin with a floating widget, multilingual support, and a polished admin dashboard. Built for real-world sites — zero dependencies on the frontend, no conflicts with other plugins.
+A lightweight, secure WordPress accessibility plugin with a floating widget, multilingual support, and a polished admin dashboard. Built for real-world sites, zero dependencies on the frontend, no conflicts with other plugins.
 
 
 > **Installation Note**
@@ -21,7 +21,7 @@ A lightweight, secure WordPress accessibility plugin with a floating widget, mul
 ## Features
 
 **Accessibility Panel**
-- Font size increase / decrease — reads the page's actual font sizes at load time and scales proportionally, including text set by Elementor inline styles and CSS class rules
+- Font size increase / decrease, reads the page's actual font sizes at load time and scales proportionally, including text set by Elementor inline styles and CSS class rules
 - High contrast mode
 - Invert colors
 - Grayscale mode
@@ -41,17 +41,17 @@ A lightweight, secure WordPress accessibility plugin with a floating widget, mul
 **Admin Dashboard**
 - Dedicated top-level menu item in the WordPress sidebar (AccessKit) with the universal accessibility icon
 - Live button preview updates as you change colors and size
-- Visual corner selector — click a corner on a miniature page diagram to set position
+- Visual corner selector: click a corner on a miniature page diagram to set position
 - Per-feature enable/disable toggles organized by group
-- Visibility control — show the widget on the entire site or on selected pages only, with a searchable checkbox list of all published pages and posts
+- Visibility control: show the widget on the entire site or on selected pages only, with a searchable checkbox list of all published pages and posts
 
 **Technical**
 - Zero frontend JavaScript dependencies — pure vanilla JS
-- All settings in a single `wp_options` row — one DB call, no custom tables
+- All settings in a single `wp_options` row : one DB call, no custom tables
 - Full `localStorage` persistence across sessions with type-validated reads
 - Public JS API (`window.AccessKitWP`) for integration with multilingual plugins
 - Works with Elementor HTML widgets and standard page builders
-- Designed to avoid conflicts — all CSS classes, JS identifiers, and PHP symbols are prefixed
+- Designed to avoid conflicts: all CSS classes, JS identifiers, and PHP symbols are prefixed
 
 ---
 
@@ -114,7 +114,7 @@ window.AccessKitWP.refresh()   // Re-detect language after a language switch
 
 ## Notes on iframes
 
-Features apply to the page DOM only. Same-origin iframes can be supported with additional configuration. Cross-origin iframes (such as embedded donation forms, maps, or video players from external domains) cannot be controlled due to browser security restrictions — this is a platform-level limitation, not a plugin limitation, and is an accepted exception under WCAG guidelines.
+Features apply to the page DOM only. Same-origin iframes can be supported with additional configuration. Cross-origin iframes (such as embedded donation forms, maps, or video players from external domains) cannot be controlled due to browser security restrictions; this is a platform-level limitation, not a plugin limitation, and is an accepted exception under WCAG guidelines.
 
 ---
 
