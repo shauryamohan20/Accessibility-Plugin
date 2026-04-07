@@ -2,6 +2,15 @@
 
 A lightweight, secure WordPress accessibility plugin with a floating widget, multilingual support, and a polished admin dashboard. Built for real-world sites — zero dependencies on the frontend, no conflicts with other plugins.
 
+
+> **Installation Note**
+> Clone or download this repository, delete `README.md`, zip the `qudra-accesskit-wp` folder, then upload the zip via **Plugins → Add New → Upload Plugin** in your WordPress dashboard.
+>
+> ```bash
+> git clone https://github.com/your-username/qudra-accesskit-wp.git
+> rm qudra-accesskit-wp/README.md
+> zip -r qudra-accesskit-wp.zip qudra-accesskit-wp/
+> ```
 ---
 
 ## Features
