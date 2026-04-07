@@ -1,0 +1,449 @@
+/*
+ * Qudra AccessKit WP — Frontend Styles
+ * All classes prefixed with .qak- to prevent conflicts.
+ */
+
+/* ── CSS Custom Properties ──────────────────────────────────────────────── */
+:root {
+  --qak-btn-bg:       #1E6264;
+  --qak-btn-icon:     #ffffff;
+  --qak-btn-size:     56px;
+  --qak-z:            99999;
+  --qak-panel-w:      300px;
+  --qak-radius:       16px;
+  --qak-gap:          20px;
+  --qak-letter-step:  0;   /* 0 | 1 | 2 | 3 */
+}
+
+/* ── Widget Root ────────────────────────────────────────────────────────── */
+#qak-widget-root {
+  position: fixed;
+  z-index: var(--qak-z);
+  /* Position set by JS via data attribute classes below */
+}
+
+/* Position classes (set on #qak-widget-root by JS) */
+#qak-widget-root.qak-pos--bottom-right {
+  bottom: var(--qak-gap);
+  right:  var(--qak-gap);
+  left: auto;
+  top: auto;
+}
+#qak-widget-root.qak-pos--bottom-left {
+  bottom: var(--qak-gap);
+  left:   var(--qak-gap);
+  right: auto;
+  top: auto;
+}
+#qak-widget-root.qak-pos--top-right {
+  top:   var(--qak-gap);
+  right: var(--qak-gap);
+  bottom: auto;
+  left: auto;
+}
+#qak-widget-root.qak-pos--top-left {
+  top:  var(--qak-gap);
+  left: var(--qak-gap);
+  bottom: auto;
+  right: auto;
+}
+
+/* RTL auto-flip: swap left↔right for positions that have a horizontal side */
+[dir="rtl"] #qak-widget-root.qak-pos--bottom-right,
+html[lang="ar"] #qak-widget-root.qak-pos--bottom-right,
+html[lang="he"] #qak-widget-root.qak-pos--bottom-right,
+html[lang="he-IL"] #qak-widget-root.qak-pos--bottom-right {
+  right: auto;
+  left: var(--qak-gap);
+}
+[dir="rtl"] #qak-widget-root.qak-pos--bottom-left,
+html[lang="ar"] #qak-widget-root.qak-pos--bottom-left,
+html[lang="he"] #qak-widget-root.qak-pos--bottom-left,
+html[lang="he-IL"] #qak-widget-root.qak-pos--bottom-left {
+  left: auto;
+  right: var(--qak-gap);
+}
+[dir="rtl"] #qak-widget-root.qak-pos--top-right,
+html[lang="ar"] #qak-widget-root.qak-pos--top-right,
+html[lang="he"] #qak-widget-root.qak-pos--top-right,
+html[lang="he-IL"] #qak-widget-root.qak-pos--top-right {
+  right: auto;
+  left: var(--qak-gap);
+}
+[dir="rtl"] #qak-widget-root.qak-pos--top-left,
+html[lang="ar"] #qak-widget-root.qak-pos--top-left,
+html[lang="he"] #qak-widget-root.qak-pos--top-left,
+html[lang="he-IL"] #qak-widget-root.qak-pos--top-left {
+  left: auto;
+  right: var(--qak-gap);
+}
+
+/* ── Trigger Button ─────────────────────────────────────────────────────── */
+#qak-trigger-btn {
+  width:  var(--qak-btn-size);
+  height: var(--qak-btn-size);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  background: var(--qak-btn-bg);
+  box-shadow: 0 4px 16px rgba(0,0,0,.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: transform .2s ease, box-shadow .2s ease;
+  outline-offset: 3px;
+}
+#qak-trigger-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 22px rgba(0,0,0,.3);
+}
+#qak-trigger-btn:focus-visible {
+  outline: 3px solid var(--qak-btn-bg);
+}
+#qak-trigger-btn svg {
+  width:  55%;
+  height: 55%;
+  stroke: var(--qak-btn-icon);
+  stroke-width: 2;
+}
+#qak-trigger-btn svg .qak-svg-fill {
+  fill: var(--qak-btn-icon);
+  stroke: none;
+}
+
+/* ── Panel ──────────────────────────────────────────────────────────────── */
+#qak-panel {
+  position: absolute;
+  width: var(--qak-panel-w);
+  background: #ffffff;
+  border-radius: var(--qak-radius);
+  box-shadow: 0 8px 40px rgba(0,0,0,.18), 0 2px 8px rgba(0,0,0,.1);
+  padding: 0;
+  overflow: hidden;
+  transform-origin: bottom center;
+  animation: qakPanelIn .18s ease both;
+}
+#qak-panel[hidden] {
+  display: none;
+}
+
+@keyframes qakPanelIn {
+  from { opacity: 0; transform: scale(.95) translateY(6px); }
+  to   { opacity: 1; transform: scale(1)   translateY(0);   }
+}
+
+/* Panel opens above button (bottom corners) */
+#qak-widget-root.qak-pos--bottom-right #qak-panel,
+#qak-widget-root.qak-pos--bottom-left  #qak-panel {
+  bottom: calc(var(--qak-btn-size) + 10px);
+  top: auto;
+}
+/* Panel opens below button (top corners) */
+#qak-widget-root.qak-pos--top-right #qak-panel,
+#qak-widget-root.qak-pos--top-left  #qak-panel {
+  top: calc(var(--qak-btn-size) + 10px);
+  bottom: auto;
+}
+
+/* Horizontal alignment */
+#qak-widget-root.qak-pos--bottom-right #qak-panel,
+#qak-widget-root.qak-pos--top-right    #qak-panel {
+  right: 0;
+  left: auto;
+}
+#qak-widget-root.qak-pos--bottom-left #qak-panel,
+#qak-widget-root.qak-pos--top-left    #qak-panel {
+  left: 0;
+  right: auto;
+}
+
+/* RTL panel alignment flip */
+[dir="rtl"] #qak-widget-root.qak-pos--bottom-right #qak-panel,
+[dir="rtl"] #qak-widget-root.qak-pos--top-right    #qak-panel,
+html[lang="ar"] #qak-widget-root.qak-pos--bottom-right #qak-panel,
+html[lang="ar"] #qak-widget-root.qak-pos--top-right    #qak-panel,
+html[lang="he"] #qak-widget-root.qak-pos--bottom-right #qak-panel,
+html[lang="he"] #qak-widget-root.qak-pos--top-right    #qak-panel {
+  right: auto;
+  left: 0;
+}
+[dir="rtl"] #qak-widget-root.qak-pos--bottom-left #qak-panel,
+[dir="rtl"] #qak-widget-root.qak-pos--top-left    #qak-panel,
+html[lang="ar"] #qak-widget-root.qak-pos--bottom-left #qak-panel,
+html[lang="ar"] #qak-widget-root.qak-pos--top-left    #qak-panel,
+html[lang="he"] #qak-widget-root.qak-pos--bottom-left #qak-panel,
+html[lang="he"] #qak-widget-root.qak-pos--top-left    #qak-panel {
+  left: auto;
+  right: 0;
+}
+
+/* ── Panel Header ───────────────────────────────────────────────────────── */
+.qak-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 12px;
+  background: var(--qak-btn-bg);
+  color: #fff;
+}
+.qak-panel-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: .02em;
+}
+.qak-panel-close {
+  background: rgba(255,255,255,.2);
+  border: none;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: #fff;
+  transition: background .15s;
+  flex-shrink: 0;
+}
+.qak-panel-close:hover { background: rgba(255,255,255,.35); }
+.qak-panel-close svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2.5; fill: none; }
+
+/* ── Panel Body ─────────────────────────────────────────────────────────── */
+.qak-panel-body {
+  padding: 12px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+/* ── Group Label ────────────────────────────────────────────────────────── */
+.qak-group-sep {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: #999;
+  margin: 8px 0 4px;
+}
+.qak-group-sep:first-child { margin-top: 0; }
+
+/* ── Feature Row ────────────────────────────────────────────────────────── */
+.qak-feat-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: 9px;
+  transition: background .15s;
+}
+.qak-feat-row:hover { background: #f4f4f4; }
+.qak-feat-label {
+  font-size: 13px;
+  color: #333;
+  font-weight: 500;
+  flex: 1;
+}
+
+/* ── Font Size Control ──────────────────────────────────────────────────── */
+.qak-font-stepper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.qak-step-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1.5px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 700;
+  color: #444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+  transition: border-color .15s, background .15s;
+}
+.qak-step-btn:hover { border-color: var(--qak-btn-bg); background: #f0f8f8; }
+.qak-step-btn:disabled { opacity: .35; cursor: default; }
+.qak-font-val {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--qak-btn-bg);
+  min-width: 30px;
+  text-align: center;
+}
+
+/* ── Toggle Switch ──────────────────────────────────────────────────────── */
+.qak-toggle {
+  position: relative;
+  width: 38px;
+  height: 22px;
+  flex-shrink: 0;
+}
+.qak-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+.qak-toggle-track {
+  position: absolute;
+  inset: 0;
+  border-radius: 11px;
+  background: #ccc;
+  cursor: pointer;
+  transition: background .2s;
+}
+.qak-toggle-thumb {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  top: 3px;
+  left: 3px;
+  transition: transform .2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+.qak-toggle input:checked + .qak-toggle-track { background: var(--qak-btn-bg); }
+.qak-toggle input:checked + .qak-toggle-track .qak-toggle-thumb { transform: translateX(16px); }
+.qak-toggle input:focus-visible + .qak-toggle-track { outline: 2px solid var(--qak-btn-bg); outline-offset: 2px; }
+
+/* ── Reset Button ───────────────────────────────────────────────────────── */
+.qak-reset-btn {
+  width: 100%;
+  margin-top: 8px;
+  padding: 9px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 9px;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  transition: border-color .15s, color .15s, background .15s;
+}
+.qak-reset-btn:hover {
+  border-color: #c00;
+  color: #c00;
+  background: #fff5f5;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ACCESSIBILITY FEATURE STYLES
+   All applied via classes on <html> element
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Font Size ──────────────────────────────────────────────────────────── */
+/*
+  JS reads the page's natural html font-size at load time and applies
+  offsets via inline style on <html> (e.g. "18px", "14px").
+  Sites using rem units scale automatically. qak-font-active is a
+  state marker only — no font-size property needed here.
+  The widget root is pinned to 16px so it never inherits the change.
+*/
+#qak-widget-root {
+  font-size: 16px !important;
+}
+
+/* ── High Contrast ──────────────────────────────────────────────────────── */
+html.qak-high-contrast,
+html.qak-high-contrast body {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+html.qak-high-contrast *:not(#qak-widget-root):not(#qak-widget-root *) {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+  outline-color: #ffffff !important;
+}
+html.qak-high-contrast a:not(#qak-widget-root a) {
+  color: #ffff00 !important;
+  text-decoration: underline !important;
+}
+html.qak-high-contrast img:not(#qak-widget-root img) {
+  filter: contrast(1.2) brightness(0.9);
+}
+
+/* ── Invert Colors ──────────────────────────────────────────────────────── */
+html.qak-invert {
+  filter: invert(1) hue-rotate(180deg);
+}
+html.qak-invert img:not(#qak-widget-root img),
+html.qak-invert video,
+html.qak-invert iframe {
+  filter: invert(1) hue-rotate(180deg);
+}
+html.qak-invert #qak-widget-root {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* ── Grayscale ──────────────────────────────────────────────────────────── */
+html.qak-grayscale {
+  filter: grayscale(1);
+}
+html.qak-grayscale #qak-widget-root {
+  filter: none;
+}
+
+/* ── Highlight Links ────────────────────────────────────────────────────── */
+html.qak-highlight-links a:not(#qak-widget-root a) {
+  outline: 2px solid #e85d00 !important;
+  outline-offset: 2px !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 2px !important;
+  text-underline-offset: 3px !important;
+}
+
+/* ── Readable Font (LTR only — hidden for RTL via JS) ───────────────────── */
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('https://cdn.jsdelivr.net/npm/opendyslexic@0.91.12/fonts/OpenDyslexic-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+html.qak-readable-font *:not(#qak-widget-root):not(#qak-widget-root *) {
+  font-family: 'OpenDyslexic', sans-serif !important;
+}
+/* RTL fallback: system sans-serif */
+html.qak-readable-font-rtl *:not(#qak-widget-root):not(#qak-widget-root *) {
+  font-family: -apple-system, 'Segoe UI', Arial, sans-serif !important;
+}
+
+/* ── Letter Spacing ─────────────────────────────────────────────────────── */
+html.qak-letter-1 *:not(#qak-widget-root):not(#qak-widget-root *) { letter-spacing: .05em !important; }
+html.qak-letter-2 *:not(#qak-widget-root):not(#qak-widget-root *) { letter-spacing: .10em !important; }
+html.qak-letter-3 *:not(#qak-widget-root):not(#qak-widget-root *) { letter-spacing: .16em !important; }
+
+/* ── Pause Animations ───────────────────────────────────────────────────── */
+html.qak-pause-anim *:not(#qak-widget-root):not(#qak-widget-root *) {
+  animation-play-state: paused !important;
+  animation-duration: 0.001ms !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* ── Large Cursor ───────────────────────────────────────────────────────── */
+html.qak-large-cursor,
+html.qak-large-cursor * {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M8 4 L8 26 L13 20 L17 28 L20 27 L16 19 L23 19 Z' fill='black' stroke='white' stroke-width='1.5'/%3E%3C/svg%3E") 8 4, auto !important;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  :root {
+    --qak-panel-w: calc(100vw - 32px);
+    --qak-gap: 12px;
+  }
+}
