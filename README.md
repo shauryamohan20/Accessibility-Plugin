@@ -1,123 +1,88 @@
-# Qudra AccessKit WP
+![EZ Accessibility](.wordpress-org/banner-772x250.png)
 
-A lightweight, secure WordPress accessibility plugin with a floating widget, multilingual support, and a polished admin dashboard. Built for real-world sites, zero dependencies on the frontend, no conflicts with other plugins.
+# EZ Accessibility
 
+By [Greyteck Studios](https://greyteck.site) · [Plugin page](https://www.greyteck.site/products/ez-accessibility/)
 
-> **Installation Note**
-> Clone or download this repository, delete `README.md`, zip the `qudra-accesskit-wp` folder, then upload the zip via **Plugins → Add New → Upload Plugin** in your WordPress dashboard.
->
-> ```bash
-> git clone https://github.com/your-username/qudra-accesskit-wp.git
-> rm qudra-accesskit-wp/README.md
-> zip -r qudra-accesskit-wp.zip qudra-accesskit-wp/
-> ```
+A lightweight WordPress accessibility toolbar. Visitors get a floating button that opens a panel for text size, contrast, readable fonts, link highlighting, motion control and more. Their choices are remembered between visits.
+
+No frontend dependencies, no external requests, and the panel lives in a Shadow DOM so theme styles can't break it.
+
+> The WordPress.org listing is generated from [`readme.txt`](readme.txt). Keep the two in sync.
 
 ## Preview
 
-![Qudra AccessKit WP panel open showing accessibility options](./preview.png)
-
----
+![EZ Accessibility panel](./preview.png)
 
 ## Features
 
-**Accessibility Panel**
-- Font size increase / decrease, reads the page's actual font sizes at load time and scales proportionally, including text set by Elementor inline styles and CSS class rules
-- High contrast mode
-- Invert colors
-- Grayscale mode
-- Highlight links
-- Readable font (OpenDyslexic for LTR; clean system sans-serif fallback for RTL)
-- Letter spacing control
-- Pause all animations
-- Large cursor
-- One-click reset
+**Visitor panel**
+- Text size: scales the page's real font sizes, including Elementor inline styles
+- High contrast, invert colors and grayscale (invert and grayscale can be combined)
+- Highlight links, readable font, letter spacing
+- Pause animations, large cursor
+- One-click reset, with a badge on the button showing how many adjustments are active
+- Keyboard accessible, with screen reader announcements, `prefers-reduced-motion` and forced-colors support
 
 **Multilingual**
-- Full UI string support for English, Arabic, and Hebrew
-- Auto-detects active language from `<html lang>` and `dir` attributes
-- Panel labels, button text, and all controls switch language automatically
-- RTL layout auto-mirrors the button and panel to the correct side — pure CSS, no flicker
+- 28 built-in languages (LTR and RTL), matched from `<html lang>` with regional fallback (`pt-BR` → `pt`)
+- Add any other language from the admin, with its own direction and labels
+- Override any built-in label; choose a fallback language
+- RTL pages mirror the button and panel automatically
+- Built-in labels live in [`assets/js/eza-i18n.js`](assets/js/eza-i18n.js), a static cached file; only overrides are inlined into pages
 
-**Admin Dashboard**
-- Dedicated top-level menu item in the WordPress sidebar (AccessKit) with the universal accessibility icon
-- Live button preview updates as you change colors and size
-- Visual corner selector: click a corner on a miniature page diagram to set position
-- Per-feature enable/disable toggles organized by group
-- Visibility control: show the widget on the entire site or on selected pages only, with a searchable checkbox list of all published pages and posts
-
-**Technical**
-- Zero frontend JavaScript dependencies — pure vanilla JS
-- All settings in a single `wp_options` row : one DB call, no custom tables
-- Full `localStorage` persistence across sessions with type-validated reads
-- Public JS API (`window.AccessKitWP`) for integration with multilingual plugins
-- Works with Elementor HTML widgets and standard page builders
-- Designed to avoid conflicts: all CSS classes, JS identifiers, and PHP symbols are prefixed
-
----
+**Admin**
+- Sectioned settings page with a live preview
+- Brand color presets, custom colors and an automatic WCAG contrast check
+- Five built-in button icons or an uploaded image (PNG/JPEG/WebP, 512 KB max; SVG refused). Uploads use the media library; on save the server re-checks the attachment's real file type and size
+- Corner, size and edge-distance controls
+- Per-feature toggles
+- Show on the entire site or only on selected pages
+- Language editor: pick any language, edit labels, add or delete your own
+- Unsaved-changes bar, with Ctrl/Cmd + S to save
 
 ## Requirements
 
-- WordPress 6.5 or higher
-- PHP 8.0 or higher
+- WordPress 6.5+
+- PHP 8.0+
 
----
+## Installation from source
 
-## Installation
-
-1. Download the zip file
-2. Go to **Plugins → Add New → Upload Plugin**
-3. Upload the zip and click **Install Now**
-4. Activate the plugin
-5. Go to **AccessKit** in the WordPress sidebar to configure
-
----
-
-## Configuration
-
-**Button Appearance** — Set background color, icon color, and size (Small / Medium / Large)
-
-**Position** — Choose any of the four corners using the visual selector. RTL languages automatically mirror the position horizontally
-
-**Features** — Enable or disable each accessibility feature individually from the dashboard
-
-**Visibility** — Choose between showing the widget on the entire site or on specific pages and posts only
-
-**Language Strings** — Customize every label in the panel for English, Arabic, and Hebrew separately
-
-**Advanced** — Override the z-index if needed for theme compatibility
-
----
-
-## Multilingual Plugin Integration
-
-After your multilingual plugin switches the active language, call:
-
-```js
-window.AccessKitWP.refresh();
+```bash
+git clone https://github.com/shauryamohan20/Accessibility-Plugin.git ez-accessibility
+cd ez-accessibility
+git archive --format=zip --prefix=ez-accessibility/ -o ../ez-accessibility.zip HEAD
 ```
 
-This re-detects the language from `<html lang>` and re-applies any language-dependent features such as the RTL font fallback.
+`.gitattributes` keeps `README.md`, `preview.png` and other dev-only files out of the zip. Use the same file list when copying into the WordPress.org SVN `trunk/`.
 
----
+Upload the zip in **Plugins → Add New → Upload Plugin**, activate it, then open **EZ Accessibility** in the admin sidebar.
+
+## WordPress.org listing artwork
+
+The plugin icon and banners live in [`.wordpress-org/`](.wordpress-org) and are generated from the EZ logo:
+
+| File | Used for |
+| --- | --- |
+| `icon-128x128.png`, `icon-256x256.png` | Plugin icon in the directory and in wp-admin search results |
+| `banner-772x250.png`, `banner-1544x500.png` | Header banner on the plugin page (normal and high-DPI) |
+
+They are not part of the plugin zip. Copy them into the top-level `assets/` folder of the WordPress.org SVN repository (next to `trunk/`), along with the `screenshot-N.png` files.
 
 ## JS API
 
 ```js
-window.AccessKitWP.open()      // Open the accessibility panel
-window.AccessKitWP.close()     // Close the panel
-window.AccessKitWP.toggle()    // Toggle open/closed
-window.AccessKitWP.reset()     // Reset all features and clear localStorage
-window.AccessKitWP.refresh()   // Re-detect language after a language switch
+window.EZAccessibility.open()     // Open the panel
+window.EZAccessibility.close()    // Close the panel
+window.EZAccessibility.toggle()   // Toggle open/closed
+window.EZAccessibility.reset()    // Reset every adjustment
+window.EZAccessibility.refresh()  // Re-detect language after a language switch
 ```
 
----
+## Upgrading from Qudra AccessKit
 
-## Notes on iframes
-
-Features apply to the page DOM only. Same-origin iframes can be supported with additional configuration. Cross-origin iframes (such as embedded donation forms, maps, or video players from external domains) cannot be controlled due to browser security restrictions; this is a platform-level limitation, not a plugin limitation, and is an accepted exception under WCAG guidelines.
-
----
+Settings saved by the old plugin are migrated automatically the first time EZ Accessibility loads.
 
 ## License
 
-GPL-2.0-or-later — see [GNU General Public License](https://www.gnu.org/licenses/gpl-2.0.html)
+GPLv2 or later. See the [GNU General Public License](https://www.gnu.org/licenses/gpl-2.0.html).
