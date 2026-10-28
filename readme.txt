@@ -1,5 +1,5 @@
 === EZ Accessibility ===
-Contributors: shauryamohan
+Contributors: stratoshades01
 Tags: accessibility, a11y, wcag, multilingual, rtl
 Requires at least: 6.5
 Tested up to: 7.1
@@ -118,10 +118,8 @@ Browsers don't allow a page to restyle content inside iframes from other website
 
 == Screenshots ==
 
-1. The accessibility panel on a website.
-2. Settings: appearance with live preview.
-3. Settings: choose which tools appear.
-4. Settings: show the button everywhere or only on selected pages.
+1. The accessibility panel your visitors see.
+2. The settings page, with a live preview of the button and panel.
 
 == Changelog ==
 

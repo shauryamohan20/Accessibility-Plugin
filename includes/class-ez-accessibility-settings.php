@@ -169,8 +169,7 @@ class EZ_Accessibility_Settings {
 	// a bad or hand-edited value can never reach the page unchecked.
 	public static function get(): array {
 		$saved = get_option( EZ_ACCESSIBILITY_OPTION, [] );
-		$saved = is_array( $saved ) ? self::upgrade_legacy_strings( $saved ) : [];
-		return self::sanitize_settings( wp_parse_args( $saved, self::defaults() ) );
+		return self::sanitize_settings( wp_parse_args( is_array( $saved ) ? $saved : [], self::defaults() ) );
 	}
 
 	// Settings from the old "Qudra AccessKit" option, cleaned for storage.
@@ -178,16 +177,14 @@ class EZ_Accessibility_Settings {
 		return self::sanitize_settings( wp_parse_args( self::upgrade_legacy_strings( $legacy ), self::defaults() ) );
 	}
 
-	// Older versions stored labels as flat "lang_{code}_{key}" options.
-	// Fold any that differ from the old defaults into the "strings" map.
+	// Qudra AccessKit stored labels as flat "lang_{en|ar|he}_{key}" options.
+	// Fold any that differ from its defaults into the "strings" map.
 	private static function upgrade_legacy_strings( array $saved ): array {
 		$legacy_defaults = [
 			'lang_en_panel_title' => 'Accessibility', 'lang_en_font_size' => 'Font Size', 'lang_en_high_contrast' => 'High Contrast',
 			'lang_en_invert' => 'Invert Colors', 'lang_en_grayscale' => 'Grayscale', 'lang_en_highlight_links' => 'Highlight Links',
 			'lang_en_readable_font' => 'Readable Font', 'lang_en_letter_spacing' => 'Letter Spacing', 'lang_en_pause_anim' => 'Pause Animations',
-			'lang_en_large_cursor' => 'Large Cursor', 'lang_en_reset' => 'Reset All', 'lang_en_open_menu' => 'Open accessibility menu',
-			'lang_en_close' => 'Close', 'lang_en_group_visual' => 'Display', 'lang_en_group_reading' => 'Reading',
-			'lang_en_group_motion' => 'Motion & pointer', 'lang_en_decrease' => 'Decrease', 'lang_en_increase' => 'Increase',
+			'lang_en_large_cursor' => 'Large Cursor', 'lang_en_reset' => 'Reset All',
 			'lang_ar_panel_title' => 'إمكانية الوصول', 'lang_ar_font_size' => 'حجم الخط', 'lang_ar_high_contrast' => 'تباين عالٍ',
 			'lang_ar_invert' => 'عكس الألوان', 'lang_ar_grayscale' => 'تدرج الرمادي', 'lang_ar_highlight_links' => 'إبراز الروابط',
 			'lang_ar_readable_font' => 'خط مقروء', 'lang_ar_letter_spacing' => 'تباعد الأحرف', 'lang_ar_pause_anim' => 'إيقاف الحركة',
@@ -198,6 +195,7 @@ class EZ_Accessibility_Settings {
 			'lang_he_large_cursor' => 'סמן גדול', 'lang_he_reset' => 'איפוס הכל',
 		];
 
+		$strings = isset( $saved['strings'] ) && is_array( $saved['strings'] ) ? $saved['strings'] : [];
 		foreach ( $saved as $key => $value ) {
 			if ( ! preg_match( '/^lang_(en|ar|he)_([a-z_]+)$/', (string) $key, $m ) ) {
 				continue;
@@ -207,9 +205,10 @@ class EZ_Accessibility_Settings {
 				continue;
 			}
 			if ( ( $legacy_defaults[ $key ] ?? null ) !== $value ) {
-				$saved['strings'][ $m[1] ][ $m[2] ] = $value;
+				$strings[ $m[1] ][ $m[2] ] = $value;
 			}
 		}
+		$saved['strings'] = $strings;
 		return $saved;
 	}
 
@@ -275,7 +274,6 @@ class EZ_Accessibility_Settings {
 				'delete'        => __( 'Delete %s', 'ez-accessibility' ),
 				'customHint'    => __( 'Empty fields fall back to the fallback language.', 'ez-accessibility' ),
 				'builtinHint'   => __( 'Edit any label to override the built-in translation.', 'ez-accessibility' ),
-				'saved'         => __( 'Settings saved', 'ez-accessibility' ),
 				'saving'        => __( 'Saving…', 'ez-accessibility' ),
 				'unsaved'       => __( 'You have unsaved changes', 'ez-accessibility' ),
 				'upToDate'      => __( 'All changes saved', 'ez-accessibility' ),
@@ -296,10 +294,10 @@ class EZ_Accessibility_Settings {
 
 	// ── Handle form save (POST → redirect → GET) ──────────────────────────────
 	public static function handle_save(): void {
-		if ( ! isset( $_POST['eza_save_settings'] ) ) {
+		if ( ! isset( $_POST['ez_accessibility_save_settings'] ) ) {
 			return;
 		}
-		check_admin_referer( 'eza_save_settings_action', 'eza_nonce' );
+		check_admin_referer( 'ez_accessibility_save', 'ez_accessibility_nonce' );
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( esc_html__( 'You do not have permission to do this.', 'ez-accessibility' ) );
 		}
@@ -321,7 +319,7 @@ class EZ_Accessibility_Settings {
 		// sanitized in sanitize_languages(); running sanitize_text_field() over
 		// the whole JSON string would corrupt labels containing < > or %.
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- decoded, then each value is sanitized in sanitize_languages().
-		$langs = isset( $_POST['eza_languages'] ) && is_string( $_POST['eza_languages'] ) ? json_decode( wp_unslash( $_POST['eza_languages'] ), true ) : null;
+		$langs = isset( $_POST['ez_accessibility_languages'] ) && is_string( $_POST['ez_accessibility_languages'] ) ? json_decode( wp_unslash( $_POST['ez_accessibility_languages'] ), true ) : null;
 		if ( is_array( $langs ) ) {
 			$input['fallback_lang'] = $langs['fallback'] ?? '';
 			$input['custom_langs']  = $langs['custom'] ?? [];
@@ -348,9 +346,9 @@ class EZ_Accessibility_Settings {
 
 		update_option( EZ_ACCESSIBILITY_OPTION, $clean );
 
-		$tab   = self::pick( self::posted_text( 'eza_tab' ), self::TABS, 'appearance' );
-		$flags = $icon_rejected ? '&eza-icon-rejected=1' : '';
-		wp_safe_redirect( admin_url( 'admin.php?page=' . self::SLUG . '&eza-saved=1' . $flags . '#' . $tab ) );
+		$tab   = self::pick( self::posted_text( 'ez_accessibility_tab' ), self::TABS, 'appearance' );
+		$flags = $icon_rejected ? '&ez-accessibility-icon-rejected=1' : '';
+		wp_safe_redirect( admin_url( 'admin.php?page=' . self::SLUG . '&ez-accessibility-saved=1' . $flags . '#' . $tab ) );
 		exit;
 	}
 
@@ -528,8 +526,8 @@ class EZ_Accessibility_Settings {
 		}
 
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- display-only flags set by our own redirect.
-		$just_saved    = isset( $_GET['eza-saved'] );
-		$icon_rejected = isset( $_GET['eza-icon-rejected'] );
+		$just_saved    = isset( $_GET['ez-accessibility-saved'] );
+		$icon_rejected = isset( $_GET['ez-accessibility-icon-rejected'] );
 		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 		?>
 		<div class="wrap eza-wrap">
@@ -565,9 +563,9 @@ class EZ_Accessibility_Settings {
 			<?php endif; ?>
 
 			<form method="post" action="" class="eza-form" id="eza-form" style="--eza-bg:<?php echo esc_attr( $s['btn_bg_color'] ); ?>;--eza-fg:<?php echo esc_attr( $s['btn_icon_color'] ); ?>" data-saved="<?php echo esc_attr( $just_saved ? '1' : '0' ); ?>">
-				<?php wp_nonce_field( 'eza_save_settings_action', 'eza_nonce' ); ?>
-				<input type="hidden" name="eza_save_settings" value="1">
-				<input type="hidden" name="eza_tab" id="eza-tab-field" value="appearance">
+				<?php wp_nonce_field( 'ez_accessibility_save', 'ez_accessibility_nonce' ); ?>
+				<input type="hidden" name="ez_accessibility_save_settings" value="1">
+				<input type="hidden" name="ez_accessibility_tab" id="eza-tab-field" value="appearance">
 
 				<div class="eza-layout">
 
@@ -585,7 +583,7 @@ class EZ_Accessibility_Settings {
 						self::section_appearance( $s );
 						self::section_features( $s );
 						self::section_visibility( $s, $selected_ids );
-						self::section_languages( $s );
+						self::section_languages();
 						self::section_advanced( $s );
 						?>
 					</div>
@@ -682,6 +680,7 @@ class EZ_Accessibility_Settings {
 							</span>
 							<span class="eza-icon-name"><?php esc_html_e( 'Your image', 'ez-accessibility' ); ?></span>
 						</label>
+						<template id="eza-upload-icon"><?php self::the_icon( 'upload' ); ?></template>
 					</div>
 
 					<div class="eza-upload" id="eza-upload"<?php if ( 'custom' !== $icon ) { echo ' hidden'; } ?>>
@@ -807,7 +806,7 @@ class EZ_Accessibility_Settings {
 								<span><?php echo esc_html( $desc ); ?></span>
 							</span>
 							<input type="hidden" name="<?php echo esc_attr( $key ); ?>" value="0">
-							<input type="checkbox" class="eza-switch" role="switch" name="<?php echo esc_attr( $key ); ?>" value="1" data-feature="<?php echo esc_attr( $key ); ?>" data-icon="<?php echo esc_attr( $meta['icon'] ); ?>" <?php checked( (bool) $s[ $key ] ); ?>>
+							<input type="checkbox" class="eza-switch" role="switch" name="<?php echo esc_attr( $key ); ?>" value="1" data-feature="<?php echo esc_attr( $key ); ?>" <?php checked( (bool) $s[ $key ] ); ?>>
 						</label>
 					<?php endforeach; ?>
 				</div>
@@ -818,13 +817,21 @@ class EZ_Accessibility_Settings {
 
 	private static function section_visibility( array $s, array $selected_ids ): void {
 		self::section_open( 'visibility', __( 'Visibility', 'ez-accessibility' ), __( 'Show the accessibility button everywhere, or only on the pages you pick.', 'ez-accessibility' ) );
-		$all_posts = get_posts( [
+		$query     = [
 			'post_type'      => [ 'page', 'post' ],
 			'posts_per_page' => 500,
 			'post_status'    => 'publish',
 			'orderby'        => 'title',
 			'order'          => 'ASC',
-		] );
+		];
+		$all_posts = get_posts( $query );
+
+		// Pages already selected but outside the first 500 still need a checkbox,
+		// otherwise they would be dropped the next time settings are saved.
+		$missing = array_diff( $selected_ids, wp_list_pluck( $all_posts, 'ID' ) );
+		if ( $missing ) {
+			$all_posts = array_merge( get_posts( array_merge( $query, [ 'post__in' => array_values( $missing ), 'posts_per_page' => count( $missing ) ] ) ), $all_posts );
+		}
 		?>
 			<div class="eza-choice-grid" role="radiogroup" aria-label="<?php esc_attr_e( 'Show widget on', 'ez-accessibility' ); ?>">
 				<label class="eza-choice">
@@ -878,7 +885,7 @@ class EZ_Accessibility_Settings {
 		<?php
 	}
 
-	private static function section_languages( array $s ): void {
+	private static function section_languages(): void {
 		self::section_open( 'languages', __( 'Languages', 'ez-accessibility' ), __( 'The panel speaks your visitor’s language automatically, based on the page’s lang attribute. 28 languages are built in, left-to-right and right-to-left. Edit any of them, or add your own.', 'ez-accessibility' ) );
 		$field_labels = [
 			'panel_title'     => __( 'Panel title', 'ez-accessibility' ),
@@ -901,7 +908,7 @@ class EZ_Accessibility_Settings {
 			'reset'           => __( 'Reset button', 'ez-accessibility' ),
 		];
 		?>
-			<input type="hidden" name="eza_languages" id="eza-languages-field" value="">
+			<input type="hidden" name="ez_accessibility_languages" id="eza-languages-field" value="">
 
 			<div class="eza-card">
 				<div class="eza-field eza-field--inline">
@@ -939,8 +946,8 @@ class EZ_Accessibility_Settings {
 						<fieldset class="eza-lang-field eza-dir-field">
 							<legend><?php esc_html_e( 'Direction', 'ez-accessibility' ); ?></legend>
 							<div class="eza-segmented">
-								<label class="eza-segment"><input type="radio" name="eza_new_dir" value="ltr" checked form="eza-none"><span><?php esc_html_e( 'Left to right', 'ez-accessibility' ); ?></span></label>
-								<label class="eza-segment"><input type="radio" name="eza_new_dir" value="rtl" form="eza-none"><span><?php esc_html_e( 'Right to left', 'ez-accessibility' ); ?></span></label>
+								<label class="eza-segment"><input type="radio" name="ez_accessibility_new_dir" value="ltr" checked form="eza-none"><span><?php esc_html_e( 'Left to right', 'ez-accessibility' ); ?></span></label>
+								<label class="eza-segment"><input type="radio" name="ez_accessibility_new_dir" value="rtl" form="eza-none"><span><?php esc_html_e( 'Right to left', 'ez-accessibility' ); ?></span></label>
 							</div>
 						</fieldset>
 					</div>

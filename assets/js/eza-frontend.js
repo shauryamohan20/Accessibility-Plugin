@@ -17,7 +17,7 @@
 
   // ── Storage helpers (validated, never trusts raw values) ──────────────────
   const LS = {
-    PREFIX: 'eza_',
+    PREFIX: 'ez_accessibility_',
     KEYS: [
       'fontStep', 'highContrast', 'invert', 'grayscale',
       'highlightLinks', 'readableFont', 'letterStep',
@@ -126,16 +126,14 @@
     const url = typeof CFG.iconUrl === 'string' ? CFG.iconUrl : '';
     if (/^https?:\/\//i.test(url)) {
       const img = document.createElement('img');
-      img.className = 'icon-img';
       img.alt = '';
       img.decoding = 'async';
       img.src = url;
       return img;
     }
-    const span = document.createElement('span');
-    span.className = 'icon-svg';
-    span.innerHTML = svg(BUTTON_ICONS[CFG.icon] || 'logo', 2.2);
-    return span.firstChild;
+    const holder = document.createElement('span');
+    holder.innerHTML = svg(BUTTON_ICONS[CFG.icon] || 'logo', 2.2); // static icon markup
+    return holder.firstChild;
   }
 
   function svg(name, width) {

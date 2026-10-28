@@ -19,7 +19,8 @@
     function select(tab, focus) {
       tabs.forEach(function (t) {
         const on = t === tab;
-        t.setAttribute('aria-selected', on ? 'true' : 'false');        t.tabIndex = on ? 0 : -1;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
         getPanel(t).hidden = !on;
       });
       if (focus) tab.focus();
@@ -131,7 +132,7 @@
   const removeBtn  = $('#eza-icon-remove');
   const iconError  = $('#eza-icon-error');
   const mockBtn    = $('#eza-mock-btn');
-  const UPLOAD_SVG = customFace.querySelector('svg') ? customFace.innerHTML : '';
+  const UPLOAD_SVG = $('#eza-upload-icon').innerHTML; // static icon markup from the page
   let mediaFrame   = null;
 
   function showIconError(msg) {
@@ -146,7 +147,7 @@
       img.alt = '';
       img.src = url; // set as a property, never as HTML
       customFace.appendChild(img);
-    } else if (UPLOAD_SVG) {
+    } else {
       customFace.innerHTML = UPLOAD_SVG;
     }
     removeBtn.hidden = !url;
@@ -451,7 +452,7 @@
     if (!name) return addError(I18N.nameRequired, newName);
     if (Object.keys(model.custom).length >= MAX_CUSTOM) return addError(I18N.tooMany, newCode);
 
-    const dir = ($('input[name="eza_new_dir"]:checked') || {}).value === 'rtl' ? 'rtl' : 'ltr';
+    const dir = ($('input[name="ez_accessibility_new_dir"]:checked') || {}).value === 'rtl' ? 'rtl' : 'ltr';
     model.custom[code] = { name: name, dir: dir };
     current = code;
     showAdd(false);
@@ -523,12 +524,12 @@
 
   function serialize() {
     const data = new FormData(form);
-    data.delete('eza_tab');
+    data.delete('ez_accessibility_tab');
     return new URLSearchParams(data).toString();
   }
   const clean = (function () {
     const d = new URLSearchParams(snapshot);
-    d.delete('eza_tab');
+    d.delete('ez_accessibility_tab');
     return d.toString();
   }());
 
@@ -563,7 +564,7 @@
 
   // Ctrl/Cmd + S saves.
   document.addEventListener('keydown', function (e) {
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+    if ((e.ctrlKey || e.metaKey) && (e.key || '').toLowerCase() === 's') {
       e.preventDefault();
       form.requestSubmit ? form.requestSubmit(saveBtn) : form.submit();
     }
@@ -573,7 +574,7 @@
   // flags so a reload doesn't show it (or the notices) again. ───────────────
   if (form.dataset.saved === '1') {
     const url = new URL(location.href);
-    if (!url.searchParams.has('eza-icon-rejected')) {
+    if (!url.searchParams.has('ez-accessibility-icon-rejected')) {
       const toast = $('#eza-toast');
       toast.hidden = false;
       setTimeout(function () {
@@ -581,8 +582,8 @@
         toast.addEventListener('animationend', function () { toast.hidden = true; }, { once: true });
       }, 2600);
     }
-    url.searchParams.delete('eza-saved');
-    url.searchParams.delete('eza-icon-rejected');
+    url.searchParams.delete('ez-accessibility-saved');
+    url.searchParams.delete('ez-accessibility-icon-rejected');
     history.replaceState(null, '', url.toString());
   }
 
