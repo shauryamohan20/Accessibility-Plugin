@@ -1,11 +1,11 @@
 /**
- * EZ Accessibility — Built-in panel translations
+ * IncluAccess — Built-in panel translations
  * Shared by the frontend widget and the admin Languages screen.
  *
  * Each language: n = native name, d = text direction, s = labels in KEYS order.
  * Site owners can override any label, and add their own languages, in the admin.
  */
-window.EZAccessibilityI18n = {
+window.IncluAccessI18n = {
   KEYS: [
     'panel_title', 'open_menu', 'close',
     'group_visual', 'group_reading', 'group_motion',

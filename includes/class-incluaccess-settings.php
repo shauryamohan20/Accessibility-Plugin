@@ -1,19 +1,19 @@
 <?php
 /**
- * EZ_Accessibility_Settings
- * Handles the WordPress admin settings page for EZ Accessibility.
+ * IncluAccess_Settings
+ * Handles the WordPress admin settings page for IncluAccess.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class EZ_Accessibility_Settings {
+class IncluAccess_Settings {
 
-	const SLUG = 'ez-accessibility';
+	const SLUG = 'incluaccess';
 	const TABS = [ 'appearance', 'features', 'visibility', 'languages', 'advanced' ];
 
-	// Panel label keys — must match KEYS in assets/js/eza-i18n.js.
+	// Panel label keys — must match KEYS in assets/js/inclu-i18n.js.
 	const STRING_KEYS = [
 		'panel_title', 'open_menu', 'close',
 		'group_visual', 'group_reading', 'group_motion',
@@ -23,7 +23,7 @@ class EZ_Accessibility_Settings {
 		'decrease', 'increase', 'reset',
 	];
 
-	// Languages shipped in assets/js/eza-i18n.js.
+	// Languages shipped in assets/js/inclu-i18n.js.
 	const BUILTIN_LANGS = [
 		'en', 'es', 'fr', 'de', 'it', 'pt', 'nl', 'pl', 'sv', 'ro', 'cs', 'tr', 'el', 'ru', 'uk',
 		'ar', 'he', 'fa', 'ur', 'hi', 'bn', 'th', 'vi', 'id', 'zh', 'zh-tw', 'ja', 'ko',
@@ -92,7 +92,7 @@ class EZ_Accessibility_Settings {
 		];
 	}
 
-	// Built-in button icons: choice key => icon() name. Keep in sync with eza-frontend.js.
+	// Built-in button icons: choice key => icon() name. Keep in sync with inclu-frontend.js.
 	public static function button_icons(): array {
 		return [
 			'person'        => 'logo',
@@ -105,11 +105,11 @@ class EZ_Accessibility_Settings {
 
 	private static function button_icon_labels(): array {
 		return [
-			'person'        => __( 'Figure', 'ez-accessibility' ),
-			'person-circle' => __( 'Figure in circle', 'ez-accessibility' ),
-			'eye'           => __( 'Eye', 'ez-accessibility' ),
-			'text'          => __( 'Text', 'ez-accessibility' ),
-			'adjust'        => __( 'Adjust', 'ez-accessibility' ),
+			'person'        => __( 'Figure', 'incluaccess' ),
+			'person-circle' => __( 'Figure in circle', 'incluaccess' ),
+			'eye'           => __( 'Eye', 'incluaccess' ),
+			'text'          => __( 'Text', 'incluaccess' ),
+			'adjust'        => __( 'Adjust', 'incluaccess' ),
 		];
 	}
 
@@ -152,15 +152,15 @@ class EZ_Accessibility_Settings {
 	// Translated admin-facing copy for each feature.
 	private static function feature_copy(): array {
 		return [
-			'feat_font_size'       => [ __( 'Text size', 'ez-accessibility' ),        __( 'Scale page text up or down in steps, including page-builder text.', 'ez-accessibility' ) ],
-			'feat_high_contrast'   => [ __( 'High contrast', 'ez-accessibility' ),    __( 'White text on black with yellow links for maximum legibility.', 'ez-accessibility' ) ],
-			'feat_invert'          => [ __( 'Invert colors', 'ez-accessibility' ),    __( 'Flips the color scheme while keeping photos and video natural.', 'ez-accessibility' ) ],
-			'feat_grayscale'       => [ __( 'Grayscale', 'ez-accessibility' ),        __( 'Removes color to reduce visual noise.', 'ez-accessibility' ) ],
-			'feat_highlight_links' => [ __( 'Highlight links', 'ez-accessibility' ),  __( 'Outlines and underlines every link on the page.', 'ez-accessibility' ) ],
-			'feat_readable_font'   => [ __( 'Readable font', 'ez-accessibility' ),    __( 'Swaps to a highly legible typeface, in every language.', 'ez-accessibility' ) ],
-			'feat_letter_spacing'  => [ __( 'Letter spacing', 'ez-accessibility' ),   __( 'Adds space between letters in three steps.', 'ez-accessibility' ) ],
-			'feat_pause_anim'      => [ __( 'Pause animations', 'ez-accessibility' ), __( 'Stops animations and transitions across the page.', 'ez-accessibility' ) ],
-			'feat_large_cursor'    => [ __( 'Large cursor', 'ez-accessibility' ),     __( 'Shows a bigger, high-contrast mouse pointer.', 'ez-accessibility' ) ],
+			'feat_font_size'       => [ __( 'Text size', 'incluaccess' ),        __( 'Scale page text up or down in steps, including page-builder text.', 'incluaccess' ) ],
+			'feat_high_contrast'   => [ __( 'High contrast', 'incluaccess' ),    __( 'White text on black with yellow links for maximum legibility.', 'incluaccess' ) ],
+			'feat_invert'          => [ __( 'Invert colors', 'incluaccess' ),    __( 'Flips the color scheme while keeping photos and video natural.', 'incluaccess' ) ],
+			'feat_grayscale'       => [ __( 'Grayscale', 'incluaccess' ),        __( 'Removes color to reduce visual noise.', 'incluaccess' ) ],
+			'feat_highlight_links' => [ __( 'Highlight links', 'incluaccess' ),  __( 'Outlines and underlines every link on the page.', 'incluaccess' ) ],
+			'feat_readable_font'   => [ __( 'Readable font', 'incluaccess' ),    __( 'Swaps to a highly legible typeface, in every language.', 'incluaccess' ) ],
+			'feat_letter_spacing'  => [ __( 'Letter spacing', 'incluaccess' ),   __( 'Adds space between letters in three steps.', 'incluaccess' ) ],
+			'feat_pause_anim'      => [ __( 'Pause animations', 'incluaccess' ), __( 'Stops animations and transitions across the page.', 'incluaccess' ) ],
+			'feat_large_cursor'    => [ __( 'Large cursor', 'incluaccess' ),     __( 'Shows a bigger, high-contrast mouse pointer.', 'incluaccess' ) ],
 		];
 	}
 
@@ -168,7 +168,7 @@ class EZ_Accessibility_Settings {
 	// Everything read from the database goes through sanitize_settings(), so
 	// a bad or hand-edited value can never reach the page unchecked.
 	public static function get(): array {
-		$saved = get_option( EZ_ACCESSIBILITY_OPTION, [] );
+		$saved = get_option( INCLUACCESS_OPTION, [] );
 		return self::sanitize_settings( wp_parse_args( is_array( $saved ) ? $saved : [], self::defaults() ) );
 	}
 
@@ -225,8 +225,8 @@ class EZ_Accessibility_Settings {
 	// ── Admin menu ────────────────────────────────────────────────────────────
 	public static function add_menu(): void {
 		add_menu_page(
-			__( 'EZ Accessibility', 'ez-accessibility' ),
-			__( 'EZ Accessibility', 'ez-accessibility' ),
+			__( 'IncluAccess', 'incluaccess' ),
+			__( 'IncluAccess', 'incluaccess' ),
 			'manage_options',
 			self::SLUG,
 			[ __CLASS__, 'render_page' ],
@@ -241,12 +241,12 @@ class EZ_Accessibility_Settings {
 			return;
 		}
 		$s = self::get();
-		wp_enqueue_style( 'ez-accessibility-admin', EZ_ACCESSIBILITY_URL . 'assets/css/eza-admin.css', [], EZ_ACCESSIBILITY_VERSION );
-		wp_enqueue_script( 'ez-accessibility-i18n', EZ_ACCESSIBILITY_URL . 'assets/js/eza-i18n.js', [], EZ_ACCESSIBILITY_VERSION, true );
+		wp_enqueue_style( 'incluaccess-admin', INCLUACCESS_URL . 'assets/css/inclu-admin.css', [], INCLUACCESS_VERSION );
+		wp_enqueue_script( 'incluaccess-i18n', INCLUACCESS_URL . 'assets/js/inclu-i18n.js', [], INCLUACCESS_VERSION, true );
 		// WordPress's own media library handles uploads (capability, nonce and file-type checks).
 		wp_enqueue_media();
-		wp_enqueue_script( 'ez-accessibility-admin', EZ_ACCESSIBILITY_URL . 'assets/js/eza-admin.js', [ 'ez-accessibility-i18n', 'media-editor' ], EZ_ACCESSIBILITY_VERSION, true );
-		wp_localize_script( 'ez-accessibility-admin', 'EZAccessibilityAdmin', [
+		wp_enqueue_script( 'incluaccess-admin', INCLUACCESS_URL . 'assets/js/inclu-admin.js', [ 'incluaccess-i18n', 'media-editor' ], INCLUACCESS_VERSION, true );
+		wp_localize_script( 'incluaccess-admin', 'IncluAccessAdmin', [
 			'icon' => [
 				'mimes'    => self::ICON_MIMES,
 				'maxBytes' => self::ICON_MAX_BYTES,
@@ -258,48 +258,48 @@ class EZ_Accessibility_Settings {
 				'site'     => self::sanitize_lang_code( get_bloginfo( 'language' ) ),
 			],
 			'i18n' => [
-				'builtIn'       => __( 'Built-in languages', 'ez-accessibility' ),
-				'customGroup'   => __( 'Your languages', 'ez-accessibility' ),
-				'edited'        => __( 'edited', 'ez-accessibility' ),
-				'ltr'           => __( 'Left to right', 'ez-accessibility' ),
-				'rtl'           => __( 'Right to left', 'ez-accessibility' ),
-				'codeInvalid'   => __( 'Use a language code like “sw”, “pt-br” or “zh-hk”.', 'ez-accessibility' ),
-				'codeExists'    => __( 'That language is already in the list — pick it from the menu to edit its labels.', 'ez-accessibility' ),
-				'nameRequired'  => __( 'Give the language a name.', 'ez-accessibility' ),
-				'tooMany'       => __( 'You have reached the maximum number of custom languages.', 'ez-accessibility' ),
-				'confirmDelete' => __( 'Delete this language and its labels?', 'ez-accessibility' ),
+				'builtIn'       => __( 'Built-in languages', 'incluaccess' ),
+				'customGroup'   => __( 'Your languages', 'incluaccess' ),
+				'edited'        => __( 'edited', 'incluaccess' ),
+				'ltr'           => __( 'Left to right', 'incluaccess' ),
+				'rtl'           => __( 'Right to left', 'incluaccess' ),
+				'codeInvalid'   => __( 'Use a language code like “sw”, “pt-br” or “zh-hk”.', 'incluaccess' ),
+				'codeExists'    => __( 'That language is already in the list — pick it from the menu to edit its labels.', 'incluaccess' ),
+				'nameRequired'  => __( 'Give the language a name.', 'incluaccess' ),
+				'tooMany'       => __( 'You have reached the maximum number of custom languages.', 'incluaccess' ),
+				'confirmDelete' => __( 'Delete this language and its labels?', 'incluaccess' ),
 				/* translators: %s: language name */
-				'restore'       => __( 'Restore %s defaults', 'ez-accessibility' ),
+				'restore'       => __( 'Restore %s defaults', 'incluaccess' ),
 				/* translators: %s: language name */
-				'delete'        => __( 'Delete %s', 'ez-accessibility' ),
-				'customHint'    => __( 'Empty fields fall back to the fallback language.', 'ez-accessibility' ),
-				'builtinHint'   => __( 'Edit any label to override the built-in translation.', 'ez-accessibility' ),
-				'saving'        => __( 'Saving…', 'ez-accessibility' ),
-				'unsaved'       => __( 'You have unsaved changes', 'ez-accessibility' ),
-				'upToDate'      => __( 'All changes saved', 'ez-accessibility' ),
-				'leave'         => __( 'You have unsaved changes. Leave anyway?', 'ez-accessibility' ),
+				'delete'        => __( 'Delete %s', 'incluaccess' ),
+				'customHint'    => __( 'Empty fields fall back to the fallback language.', 'incluaccess' ),
+				'builtinHint'   => __( 'Edit any label to override the built-in translation.', 'incluaccess' ),
+				'saving'        => __( 'Saving…', 'incluaccess' ),
+				'unsaved'       => __( 'You have unsaved changes', 'incluaccess' ),
+				'upToDate'      => __( 'All changes saved', 'incluaccess' ),
+				'leave'         => __( 'You have unsaved changes. Leave anyway?', 'incluaccess' ),
 				/* translators: %d: number of selected pages */
-				'selected'      => __( '%d selected', 'ez-accessibility' ),
-				'contrastOk'    => __( 'Good contrast', 'ez-accessibility' ),
-				'contrastLow'   => __( 'Low contrast — the icon may be hard to see', 'ez-accessibility' ),
+				'selected'      => __( '%d selected', 'incluaccess' ),
+				'contrastOk'    => __( 'Good contrast', 'incluaccess' ),
+				'contrastLow'   => __( 'Low contrast — the icon may be hard to see', 'incluaccess' ),
 				/* translators: 1: number of tools turned on, 2: total number of tools */
-				'featCount'     => __( '%1$d of %2$d turned on', 'ez-accessibility' ),
-				'iconTitle'     => __( 'Choose a button icon', 'ez-accessibility' ),
-				'iconUse'       => __( 'Use this image', 'ez-accessibility' ),
-				'iconBadType'   => __( 'That file type isn’t allowed. Use a PNG, JPEG or WebP image.', 'ez-accessibility' ),
-				'iconTooBig'    => __( 'That image is larger than 512 KB. Please use a smaller file.', 'ez-accessibility' ),
+				'featCount'     => __( '%1$d of %2$d turned on', 'incluaccess' ),
+				'iconTitle'     => __( 'Choose a button icon', 'incluaccess' ),
+				'iconUse'       => __( 'Use this image', 'incluaccess' ),
+				'iconBadType'   => __( 'That file type isn’t allowed. Use a PNG, JPEG or WebP image.', 'incluaccess' ),
+				'iconTooBig'    => __( 'That image is larger than 512 KB. Please use a smaller file.', 'incluaccess' ),
 			],
 		] );
 	}
 
 	// ── Handle form save (POST → redirect → GET) ──────────────────────────────
 	public static function handle_save(): void {
-		if ( ! isset( $_POST['ez_accessibility_save_settings'] ) ) {
+		if ( ! isset( $_POST['incluaccess_save_settings'] ) ) {
 			return;
 		}
-		check_admin_referer( 'ez_accessibility_save', 'ez_accessibility_nonce' );
+		check_admin_referer( 'incluaccess_save', 'incluaccess_nonce' );
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You do not have permission to do this.', 'ez-accessibility' ) );
+			wp_die( esc_html__( 'You do not have permission to do this.', 'incluaccess' ) );
 		}
 
 		// Read only the fields this form owns; sanitize_settings() validates each one.
@@ -319,7 +319,7 @@ class EZ_Accessibility_Settings {
 		// sanitized in sanitize_languages(); running sanitize_text_field() over
 		// the whole JSON string would corrupt labels containing < > or %.
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- decoded, then each value is sanitized in sanitize_languages().
-		$langs = isset( $_POST['ez_accessibility_languages'] ) && is_string( $_POST['ez_accessibility_languages'] ) ? json_decode( wp_unslash( $_POST['ez_accessibility_languages'] ), true ) : null;
+		$langs = isset( $_POST['incluaccess_languages'] ) && is_string( $_POST['incluaccess_languages'] ) ? json_decode( wp_unslash( $_POST['incluaccess_languages'] ), true ) : null;
 		if ( is_array( $langs ) ) {
 			$input['fallback_lang'] = $langs['fallback'] ?? '';
 			$input['custom_langs']  = $langs['custom'] ?? [];
@@ -344,11 +344,11 @@ class EZ_Accessibility_Settings {
 			}
 		}
 
-		update_option( EZ_ACCESSIBILITY_OPTION, $clean );
+		update_option( INCLUACCESS_OPTION, $clean );
 
-		$tab   = self::pick( self::posted_text( 'ez_accessibility_tab' ), self::TABS, 'appearance' );
-		$flags = $icon_rejected ? '&ez-accessibility-icon-rejected=1' : '';
-		wp_safe_redirect( admin_url( 'admin.php?page=' . self::SLUG . '&ez-accessibility-saved=1' . $flags . '#' . $tab ) );
+		$tab   = self::pick( self::posted_text( 'incluaccess_tab' ), self::TABS, 'appearance' );
+		$flags = $icon_rejected ? '&incluaccess-icon-rejected=1' : '';
+		wp_safe_redirect( admin_url( 'admin.php?page=' . self::SLUG . '&incluaccess-saved=1' . $flags . '#' . $tab ) );
 		exit;
 	}
 
@@ -483,7 +483,7 @@ class EZ_Accessibility_Settings {
 			'check'     => '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
 			'undo'      => '<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>',
 		];
-		return '<svg class="eza-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' . ( $paths[ $name ] ?? '' ) . '</svg>';
+		return '<svg class="inclu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' . ( $paths[ $name ] ?? '' ) . '</svg>';
 	}
 
 	// Print an icon, escaped with an SVG-only allowlist.
@@ -508,41 +508,41 @@ class EZ_Accessibility_Settings {
 		$s = self::get();
 
 		$nav = [
-			'appearance' => [ __( 'Appearance', 'ez-accessibility' ), 'brush' ],
-			'features'   => [ __( 'Features', 'ez-accessibility' ), 'toggles' ],
-			'visibility' => [ __( 'Visibility', 'ez-accessibility' ), 'eye' ],
-			'languages'  => [ __( 'Languages', 'ez-accessibility' ), 'globe' ],
-			'advanced'   => [ __( 'Advanced', 'ez-accessibility' ), 'sliders' ],
+			'appearance' => [ __( 'Appearance', 'incluaccess' ), 'brush' ],
+			'features'   => [ __( 'Features', 'incluaccess' ), 'toggles' ],
+			'visibility' => [ __( 'Visibility', 'incluaccess' ), 'eye' ],
+			'languages'  => [ __( 'Languages', 'incluaccess' ), 'globe' ],
+			'advanced'   => [ __( 'Advanced', 'incluaccess' ), 'sliders' ],
 		];
 
 		$selected_ids = array_filter( array_map( 'absint', explode( ',', $s['visibility_pages'] ) ) );
 		if ( 'all' === $s['visibility_mode'] ) {
-			$status = __( 'Showing on every page', 'ez-accessibility' );
+			$status = __( 'Showing on every page', 'incluaccess' );
 		} elseif ( $selected_ids ) {
 			/* translators: %d: number of pages */
-			$status = sprintf( _n( 'Showing on %d page', 'Showing on %d pages', count( $selected_ids ), 'ez-accessibility' ), count( $selected_ids ) );
+			$status = sprintf( _n( 'Showing on %d page', 'Showing on %d pages', count( $selected_ids ), 'incluaccess' ), count( $selected_ids ) );
 		} else {
 			$status = '';
 		}
 
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- display-only flags set by our own redirect.
-		$just_saved    = isset( $_GET['ez-accessibility-saved'] );
-		$icon_rejected = isset( $_GET['ez-accessibility-icon-rejected'] );
+		$just_saved    = isset( $_GET['incluaccess-saved'] );
+		$icon_rejected = isset( $_GET['incluaccess-icon-rejected'] );
 		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 		?>
-		<div class="wrap eza-wrap">
-			<header class="eza-topbar">
-				<div class="eza-brand">
-					<span class="eza-brand-mark"><img src="<?php echo esc_url( EZ_ACCESSIBILITY_URL . 'assets/img/logo.png' ); ?>" alt="" width="64" height="64"></span>
+		<div class="wrap inclu-wrap">
+			<header class="inclu-topbar">
+				<div class="inclu-brand">
+					<span class="inclu-brand-mark"><img src="<?php echo esc_url( INCLUACCESS_URL . 'assets/img/logo.png' ); ?>" alt="" width="64" height="64"></span>
 					<div>
-						<h1><?php esc_html_e( 'EZ Accessibility', 'ez-accessibility' ); ?></h1>
-						<p><?php esc_html_e( 'Give every visitor a comfortable way to read your site.', 'ez-accessibility' ); ?></p>
+						<h1><?php esc_html_e( 'IncluAccess', 'incluaccess' ); ?></h1>
+						<p><?php esc_html_e( 'Give every visitor a comfortable way to read your site.', 'incluaccess' ); ?></p>
 					</div>
 				</div>
 				<?php if ( $status ) : ?>
-					<p class="eza-status">
+					<p class="inclu-status">
 						<?php echo esc_html( $status ); ?>
-						<a href="#visibility" data-goto="visibility"><?php esc_html_e( 'Change', 'ez-accessibility' ); ?></a>
+						<a href="#visibility" data-goto="visibility"><?php esc_html_e( 'Change', 'incluaccess' ); ?></a>
 					</p>
 				<?php endif; ?>
 			</header>
@@ -550,35 +550,35 @@ class EZ_Accessibility_Settings {
 
 			<?php if ( $icon_rejected ) : ?>
 				<div class="notice notice-error">
-					<p><?php esc_html_e( 'The custom icon wasn’t saved because the file isn’t a valid PNG, JPEG or WebP image under 512 KB. The button is using the default icon instead.', 'ez-accessibility' ); ?></p>
+					<p><?php esc_html_e( 'The custom icon wasn’t saved because the file isn’t a valid PNG, JPEG or WebP image under 512 KB. The button is using the default icon instead.', 'incluaccess' ); ?></p>
 				</div>
 			<?php endif; ?>
 			<?php if ( ! $status ) : ?>
 				<div class="notice notice-warning">
 					<p>
-						<?php esc_html_e( 'The button is hidden everywhere: “Selected pages only” is on, but no pages are selected.', 'ez-accessibility' ); ?>
-						<a href="#visibility" data-goto="visibility"><?php esc_html_e( 'Choose pages', 'ez-accessibility' ); ?></a>
+						<?php esc_html_e( 'The button is hidden everywhere: “Selected pages only” is on, but no pages are selected.', 'incluaccess' ); ?>
+						<a href="#visibility" data-goto="visibility"><?php esc_html_e( 'Choose pages', 'incluaccess' ); ?></a>
 					</p>
 				</div>
 			<?php endif; ?>
 
-			<form method="post" action="" class="eza-form" id="eza-form" style="--eza-bg:<?php echo esc_attr( $s['btn_bg_color'] ); ?>;--eza-fg:<?php echo esc_attr( $s['btn_icon_color'] ); ?>" data-saved="<?php echo esc_attr( $just_saved ? '1' : '0' ); ?>">
-				<?php wp_nonce_field( 'ez_accessibility_save', 'ez_accessibility_nonce' ); ?>
-				<input type="hidden" name="ez_accessibility_save_settings" value="1">
-				<input type="hidden" name="ez_accessibility_tab" id="eza-tab-field" value="appearance">
+			<form method="post" action="" class="inclu-form" id="inclu-form" style="--inclu-bg:<?php echo esc_attr( $s['btn_bg_color'] ); ?>;--inclu-fg:<?php echo esc_attr( $s['btn_icon_color'] ); ?>" data-saved="<?php echo esc_attr( $just_saved ? '1' : '0' ); ?>">
+				<?php wp_nonce_field( 'incluaccess_save', 'incluaccess_nonce' ); ?>
+				<input type="hidden" name="incluaccess_save_settings" value="1">
+				<input type="hidden" name="incluaccess_tab" id="inclu-tab-field" value="appearance">
 
-				<div class="eza-layout">
+				<div class="inclu-layout">
 
-					<nav class="eza-nav" role="tablist" aria-label="<?php esc_attr_e( 'Settings sections', 'ez-accessibility' ); ?>" aria-orientation="vertical">
+					<nav class="inclu-nav" role="tablist" aria-label="<?php esc_attr_e( 'Settings sections', 'incluaccess' ); ?>" aria-orientation="vertical">
 						<?php foreach ( $nav as $id => [ $label, $icon ] ) : ?>
-							<button type="button" role="tab" class="eza-nav-item" id="eza-tab-<?php echo esc_attr( $id ); ?>" data-tab="<?php echo esc_attr( $id ); ?>" aria-controls="eza-panel-<?php echo esc_attr( $id ); ?>" aria-selected="<?php echo esc_attr( 'appearance' === $id ? 'true' : 'false' ); ?>" tabindex="<?php echo esc_attr( 'appearance' === $id ? '0' : '-1' ); ?>">
+							<button type="button" role="tab" class="inclu-nav-item" id="inclu-tab-<?php echo esc_attr( $id ); ?>" data-tab="<?php echo esc_attr( $id ); ?>" aria-controls="inclu-panel-<?php echo esc_attr( $id ); ?>" aria-selected="<?php echo esc_attr( 'appearance' === $id ? 'true' : 'false' ); ?>" tabindex="<?php echo esc_attr( 'appearance' === $id ? '0' : '-1' ); ?>">
 								<?php self::the_icon( $icon ); ?>
 								<span><?php echo esc_html( $label ); ?></span>
 							</button>
 						<?php endforeach; ?>
 					</nav>
 
-					<div class="eza-content">
+					<div class="inclu-content">
 						<?php
 						self::section_appearance( $s );
 						self::section_features( $s );
@@ -592,32 +592,32 @@ class EZ_Accessibility_Settings {
 
 				</div>
 
-				<div class="eza-savebar" id="eza-savebar">
-					<span class="eza-savebar-msg" id="eza-savebar-msg" aria-live="polite"><?php esc_html_e( 'All changes saved', 'ez-accessibility' ); ?></span>
-					<div class="eza-savebar-actions">
-						<button type="button" class="eza-btn eza-btn--ghost" id="eza-discard" disabled><?php esc_html_e( 'Discard', 'ez-accessibility' ); ?></button>
-						<button type="submit" class="eza-btn eza-btn--primary" id="eza-save"><?php esc_html_e( 'Save changes', 'ez-accessibility' ); ?></button>
+				<div class="inclu-savebar" id="inclu-savebar">
+					<span class="inclu-savebar-msg" id="inclu-savebar-msg" aria-live="polite"><?php esc_html_e( 'All changes saved', 'incluaccess' ); ?></span>
+					<div class="inclu-savebar-actions">
+						<button type="button" class="inclu-btn inclu-btn--ghost" id="inclu-discard" disabled><?php esc_html_e( 'Discard', 'incluaccess' ); ?></button>
+						<button type="submit" class="inclu-btn inclu-btn--primary" id="inclu-save"><?php esc_html_e( 'Save changes', 'incluaccess' ); ?></button>
 					</div>
 				</div>
 			</form>
 
-			<p class="eza-credit">
+			<p class="inclu-credit">
 				<?php
 				echo wp_kses(
 					sprintf(
 						/* translators: 1: plugin version, 2: link to the developer's site */
-						esc_html__( 'EZ Accessibility %1$s · by %2$s', 'ez-accessibility' ),
-						esc_html( EZ_ACCESSIBILITY_VERSION ),
-						'<a href="' . esc_url( 'https://greyteck.site' ) . '" target="_blank" rel="noopener">' . esc_html__( 'Greyteck Studios', 'ez-accessibility' ) . '</a>'
+						esc_html__( 'IncluAccess %1$s · by %2$s', 'incluaccess' ),
+						esc_html( INCLUACCESS_VERSION ),
+						'<a href="' . esc_url( 'https://greyteck.site' ) . '" target="_blank" rel="noopener">' . esc_html__( 'Greyteck Studios', 'incluaccess' ) . '</a>'
 					),
 					[ 'a' => [ 'href' => true, 'target' => true, 'rel' => true ] ]
 				);
 				?>
 			</p>
 
-			<div class="eza-toast" id="eza-toast" role="status" aria-live="polite" hidden>
+			<div class="inclu-toast" id="inclu-toast" role="status" aria-live="polite" hidden>
 				<?php self::the_icon( 'check' ); ?>
-				<span><?php esc_html_e( 'Settings saved', 'ez-accessibility' ); ?></span>
+				<span><?php esc_html_e( 'Settings saved', 'incluaccess' ); ?></span>
 			</div>
 		</div>
 		<?php
@@ -626,8 +626,8 @@ class EZ_Accessibility_Settings {
 	// ── Section helpers ───────────────────────────────────────────────────────
 	private static function section_open( string $id, string $title, string $desc ): void {
 		?>
-		<section class="eza-panel" id="eza-panel-<?php echo esc_attr( $id ); ?>" role="tabpanel" aria-labelledby="eza-tab-<?php echo esc_attr( $id ); ?>" tabindex="0"<?php if ( 'appearance' !== $id ) { echo ' hidden'; } ?>>
-			<div class="eza-panel-head">
+		<section class="inclu-panel" id="inclu-panel-<?php echo esc_attr( $id ); ?>" role="tabpanel" aria-labelledby="inclu-tab-<?php echo esc_attr( $id ); ?>" tabindex="0"<?php if ( 'appearance' !== $id ) { echo ' hidden'; } ?>>
+			<div class="inclu-panel-head">
 				<h2><?php echo esc_html( $title ); ?></h2>
 				<p><?php echo esc_html( $desc ); ?></p>
 			</div>
@@ -636,17 +636,17 @@ class EZ_Accessibility_Settings {
 
 	private static function color_field( string $name, string $label, string $value, array $presets ): void {
 		?>
-		<div class="eza-field">
-			<span class="eza-label" id="<?php echo esc_attr( $name ); ?>-label"><?php echo esc_html( $label ); ?></span>
-			<div class="eza-color" data-color-field>
-				<div class="eza-swatches" role="group" aria-labelledby="<?php echo esc_attr( $name ); ?>-label">
+		<div class="inclu-field">
+			<span class="inclu-label" id="<?php echo esc_attr( $name ); ?>-label"><?php echo esc_html( $label ); ?></span>
+			<div class="inclu-color" data-color-field>
+				<div class="inclu-swatches" role="group" aria-labelledby="<?php echo esc_attr( $name ); ?>-label">
 					<?php foreach ( $presets as $hex => $preset_label ) : ?>
-						<button type="button" class="eza-swatch" style="--sw:<?php echo esc_attr( $hex ); ?>" data-color="<?php echo esc_attr( $hex ); ?>" aria-label="<?php echo esc_attr( $preset_label ); ?>" aria-pressed="<?php echo esc_attr( strtolower( $value ) === strtolower( $hex ) ? 'true' : 'false' ); ?>"></button>
+						<button type="button" class="inclu-swatch" style="--sw:<?php echo esc_attr( $hex ); ?>" data-color="<?php echo esc_attr( $hex ); ?>" aria-label="<?php echo esc_attr( $preset_label ); ?>" aria-pressed="<?php echo esc_attr( strtolower( $value ) === strtolower( $hex ) ? 'true' : 'false' ); ?>"></button>
 					<?php endforeach; ?>
 				</div>
-				<label class="eza-color-custom">
-					<input type="color" value="<?php echo esc_attr( $value ); ?>" data-color-picker aria-label="<?php echo esc_attr( sprintf( /* translators: %s: field label */ __( 'Custom %s', 'ez-accessibility' ), strtolower( $label ) ) ); ?>">
-					<input type="text" class="eza-input eza-input--hex" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>" maxlength="7" spellcheck="false" autocomplete="off" pattern="#[0-9a-fA-F]{6}" data-color-hex aria-labelledby="<?php echo esc_attr( $name ); ?>-label">
+				<label class="inclu-color-custom">
+					<input type="color" value="<?php echo esc_attr( $value ); ?>" data-color-picker aria-label="<?php echo esc_attr( sprintf( /* translators: %s: field label */ __( 'Custom %s', 'incluaccess' ), strtolower( $label ) ) ); ?>">
+					<input type="text" class="inclu-input inclu-input--hex" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>" maxlength="7" spellcheck="false" autocomplete="off" pattern="#[0-9a-fA-F]{6}" data-color-hex aria-labelledby="<?php echo esc_attr( $name ); ?>-label">
 				</label>
 			</div>
 		</div>
@@ -654,84 +654,84 @@ class EZ_Accessibility_Settings {
 	}
 
 	private static function section_appearance( array $s ): void {
-		self::section_open( 'appearance', __( 'Appearance', 'ez-accessibility' ), __( 'Match the button to your brand and choose where it sits on screen.', 'ez-accessibility' ) );
+		self::section_open( 'appearance', __( 'Appearance', 'incluaccess' ), __( 'Match the button to your brand and choose where it sits on screen.', 'incluaccess' ) );
 		$custom_url = self::custom_icon_url( (int) $s['btn_custom_icon'] );
 		$icon       = ( 'custom' === $s['btn_icon'] && ! $custom_url ) ? 'person' : $s['btn_icon'];
 		?>
-			<div class="eza-card">
-				<div class="eza-field">
-					<span class="eza-label" id="eza-icon-label"><?php esc_html_e( 'Button icon', 'ez-accessibility' ); ?></span>
-					<div class="eza-icons" role="radiogroup" aria-labelledby="eza-icon-label">
+			<div class="inclu-card">
+				<div class="inclu-field">
+					<span class="inclu-label" id="inclu-icon-label"><?php esc_html_e( 'Button icon', 'incluaccess' ); ?></span>
+					<div class="inclu-icons" role="radiogroup" aria-labelledby="inclu-icon-label">
 						<?php foreach ( self::button_icon_labels() as $key => $label ) : ?>
-							<label class="eza-icon-choice">
+							<label class="inclu-icon-choice">
 								<input type="radio" name="btn_icon" value="<?php echo esc_attr( $key ); ?>" <?php checked( $icon, $key ); ?>>
-								<span class="eza-icon-face" data-icon-face><?php self::the_icon( self::button_icons()[ $key ] ); ?></span>
-								<span class="eza-icon-name"><?php echo esc_html( $label ); ?></span>
+								<span class="inclu-icon-face" data-icon-face><?php self::the_icon( self::button_icons()[ $key ] ); ?></span>
+								<span class="inclu-icon-name"><?php echo esc_html( $label ); ?></span>
 							</label>
 						<?php endforeach; ?>
-						<label class="eza-icon-choice">
-							<input type="radio" name="btn_icon" value="custom" id="eza-icon-custom" <?php checked( $icon, 'custom' ); ?>>
-							<span class="eza-icon-face eza-icon-face--custom" id="eza-custom-face" data-icon-face>
+						<label class="inclu-icon-choice">
+							<input type="radio" name="btn_icon" value="custom" id="inclu-icon-custom" <?php checked( $icon, 'custom' ); ?>>
+							<span class="inclu-icon-face inclu-icon-face--custom" id="inclu-custom-face" data-icon-face>
 								<?php if ( $custom_url ) : ?>
 									<img src="<?php echo esc_url( $custom_url ); ?>" alt="">
 								<?php else : ?>
 									<?php self::the_icon( 'upload' ); ?>
 								<?php endif; ?>
 							</span>
-							<span class="eza-icon-name"><?php esc_html_e( 'Your image', 'ez-accessibility' ); ?></span>
+							<span class="inclu-icon-name"><?php esc_html_e( 'Your image', 'incluaccess' ); ?></span>
 						</label>
-						<template id="eza-upload-icon"><?php self::the_icon( 'upload' ); ?></template>
+						<template id="inclu-upload-icon"><?php self::the_icon( 'upload' ); ?></template>
 					</div>
 
-					<div class="eza-upload" id="eza-upload"<?php if ( 'custom' !== $icon ) { echo ' hidden'; } ?>>
-						<input type="hidden" name="btn_custom_icon" id="eza-custom-icon" value="<?php echo esc_attr( $custom_url ? (int) $s['btn_custom_icon'] : 0 ); ?>">
-						<div class="eza-upload-actions">
-							<button type="button" class="eza-btn eza-btn--ghost eza-btn--sm" id="eza-icon-pick">
-								<?php echo $custom_url ? esc_html__( 'Replace image', 'ez-accessibility' ) : esc_html__( 'Upload or choose image', 'ez-accessibility' ); ?>
+					<div class="inclu-upload" id="inclu-upload"<?php if ( 'custom' !== $icon ) { echo ' hidden'; } ?>>
+						<input type="hidden" name="btn_custom_icon" id="inclu-custom-icon" value="<?php echo esc_attr( $custom_url ? (int) $s['btn_custom_icon'] : 0 ); ?>">
+						<div class="inclu-upload-actions">
+							<button type="button" class="inclu-btn inclu-btn--ghost inclu-btn--sm" id="inclu-icon-pick">
+								<?php echo $custom_url ? esc_html__( 'Replace image', 'incluaccess' ) : esc_html__( 'Upload or choose image', 'incluaccess' ); ?>
 							</button>
-							<button type="button" class="eza-link-btn eza-link-btn--danger" id="eza-icon-remove"<?php if ( ! $custom_url ) { echo ' hidden'; } ?>><?php esc_html_e( 'Remove', 'ez-accessibility' ); ?></button>
+							<button type="button" class="inclu-link-btn inclu-link-btn--danger" id="inclu-icon-remove"<?php if ( ! $custom_url ) { echo ' hidden'; } ?>><?php esc_html_e( 'Remove', 'incluaccess' ); ?></button>
 						</div>
-						<p class="eza-hint"><?php esc_html_e( 'PNG, JPEG or WebP, up to 512 KB. A square image with a transparent background works best. The icon color setting doesn’t apply to images.', 'ez-accessibility' ); ?></p>
-						<p class="eza-hint"><?php esc_html_e( 'SVG files aren’t accepted, because they can contain code that runs in visitors’ browsers.', 'ez-accessibility' ); ?></p>
-						<p class="eza-error" id="eza-icon-error" role="alert" hidden></p>
+						<p class="inclu-hint"><?php esc_html_e( 'PNG, JPEG or WebP, up to 512 KB. A square image with a transparent background works best. The icon color setting doesn’t apply to images.', 'incluaccess' ); ?></p>
+						<p class="inclu-hint"><?php esc_html_e( 'SVG files aren’t accepted, because they can contain code that runs in visitors’ browsers.', 'incluaccess' ); ?></p>
+						<p class="inclu-error" id="inclu-icon-error" role="alert" hidden></p>
 					</div>
 				</div>
 			</div>
 
-			<div class="eza-card">
+			<div class="inclu-card">
 				<?php
-				self::color_field( 'btn_bg_color', __( 'Brand color', 'ez-accessibility' ), $s['btn_bg_color'], [
-					'#2346D3' => __( 'Blue', 'ez-accessibility' ),
-					'#0F766E' => __( 'Teal', 'ez-accessibility' ),
-					'#6D28D9' => __( 'Violet', 'ez-accessibility' ),
-					'#BE123C' => __( 'Rose', 'ez-accessibility' ),
-					'#B45309' => __( 'Amber', 'ez-accessibility' ),
-					'#111827' => __( 'Ink', 'ez-accessibility' ),
+				self::color_field( 'btn_bg_color', __( 'Brand color', 'incluaccess' ), $s['btn_bg_color'], [
+					'#2346D3' => __( 'Blue', 'incluaccess' ),
+					'#0F766E' => __( 'Teal', 'incluaccess' ),
+					'#6D28D9' => __( 'Violet', 'incluaccess' ),
+					'#BE123C' => __( 'Rose', 'incluaccess' ),
+					'#B45309' => __( 'Amber', 'incluaccess' ),
+					'#111827' => __( 'Ink', 'incluaccess' ),
 				] );
-				self::color_field( 'btn_icon_color', __( 'Icon color', 'ez-accessibility' ), $s['btn_icon_color'], [
-					'#ffffff' => __( 'White', 'ez-accessibility' ),
-					'#111827' => __( 'Ink', 'ez-accessibility' ),
+				self::color_field( 'btn_icon_color', __( 'Icon color', 'incluaccess' ), $s['btn_icon_color'], [
+					'#ffffff' => __( 'White', 'incluaccess' ),
+					'#111827' => __( 'Ink', 'incluaccess' ),
 				] );
 				?>
-				<p class="eza-contrast" id="eza-contrast" aria-live="polite">
-					<span class="eza-contrast-ratio"></span>
-					<span class="eza-contrast-text"></span>
+				<p class="inclu-contrast" id="inclu-contrast" aria-live="polite">
+					<span class="inclu-contrast-ratio"></span>
+					<span class="inclu-contrast-text"></span>
 				</p>
 			</div>
 
-			<div class="eza-card">
-				<div class="eza-field">
-					<span class="eza-label" id="eza-size-label"><?php esc_html_e( 'Button size', 'ez-accessibility' ); ?></span>
-					<div class="eza-segmented" role="radiogroup" aria-labelledby="eza-size-label">
+			<div class="inclu-card">
+				<div class="inclu-field">
+					<span class="inclu-label" id="inclu-size-label"><?php esc_html_e( 'Button size', 'incluaccess' ); ?></span>
+					<div class="inclu-segmented" role="radiogroup" aria-labelledby="inclu-size-label">
 						<?php
 						$sizes = [
-							'small'  => [ __( 'Small', 'ez-accessibility' ), '48px' ],
-							'medium' => [ __( 'Medium', 'ez-accessibility' ), '56px' ],
-							'large'  => [ __( 'Large', 'ez-accessibility' ), '64px' ],
+							'small'  => [ __( 'Small', 'incluaccess' ), '48px' ],
+							'medium' => [ __( 'Medium', 'incluaccess' ), '56px' ],
+							'large'  => [ __( 'Large', 'incluaccess' ), '64px' ],
 						];
 						foreach ( $sizes as $val => [ $label, $px ] ) :
 							?>
-							<label class="eza-segment">
+							<label class="inclu-segment">
 								<input type="radio" name="btn_size" value="<?php echo esc_attr( $val ); ?>" <?php checked( $s['btn_size'], $val ); ?>>
 								<span><?php echo esc_html( $label ); ?> <small><?php echo esc_html( $px ); ?></small></span>
 							</label>
@@ -739,33 +739,33 @@ class EZ_Accessibility_Settings {
 					</div>
 				</div>
 
-				<div class="eza-field">
-					<span class="eza-label" id="eza-pos-label"><?php esc_html_e( 'Position', 'ez-accessibility' ); ?></span>
-					<div class="eza-corners" role="radiogroup" aria-labelledby="eza-pos-label">
+				<div class="inclu-field">
+					<span class="inclu-label" id="inclu-pos-label"><?php esc_html_e( 'Position', 'incluaccess' ); ?></span>
+					<div class="inclu-corners" role="radiogroup" aria-labelledby="inclu-pos-label">
 						<?php
 						$corners = [
-							'top-left'     => __( 'Top left', 'ez-accessibility' ),
-							'top-right'    => __( 'Top right', 'ez-accessibility' ),
-							'bottom-left'  => __( 'Bottom left', 'ez-accessibility' ),
-							'bottom-right' => __( 'Bottom right', 'ez-accessibility' ),
+							'top-left'     => __( 'Top left', 'incluaccess' ),
+							'top-right'    => __( 'Top right', 'incluaccess' ),
+							'bottom-left'  => __( 'Bottom left', 'incluaccess' ),
+							'bottom-right' => __( 'Bottom right', 'incluaccess' ),
 						];
 						foreach ( $corners as $val => $label ) :
 							?>
-							<label class="eza-corner eza-corner--<?php echo esc_attr( $val ); ?>">
+							<label class="inclu-corner inclu-corner--<?php echo esc_attr( $val ); ?>">
 								<input type="radio" name="btn_position" value="<?php echo esc_attr( $val ); ?>" <?php checked( $s['btn_position'], $val ); ?>>
-								<span class="eza-corner-box"><span class="eza-corner-dot"></span></span>
-								<span class="eza-corner-name"><?php echo esc_html( $label ); ?></span>
+								<span class="inclu-corner-box"><span class="inclu-corner-dot"></span></span>
+								<span class="inclu-corner-name"><?php echo esc_html( $label ); ?></span>
 							</label>
 						<?php endforeach; ?>
 					</div>
-					<p class="eza-hint"><?php esc_html_e( 'On right-to-left (RTL) pages the button mirrors to the opposite side automatically.', 'ez-accessibility' ); ?></p>
+					<p class="inclu-hint"><?php esc_html_e( 'On right-to-left (RTL) pages the button mirrors to the opposite side automatically.', 'incluaccess' ); ?></p>
 				</div>
 
-				<div class="eza-field">
-					<label class="eza-label" for="eza-offset"><?php esc_html_e( 'Distance from edge', 'ez-accessibility' ); ?></label>
-					<div class="eza-range">
-						<input type="range" id="eza-offset" name="btn_offset" min="0" max="80" step="2" value="<?php echo esc_attr( $s['btn_offset'] ); ?>">
-						<output for="eza-offset" id="eza-offset-out"><?php echo esc_html( $s['btn_offset'] ); ?>px</output>
+				<div class="inclu-field">
+					<label class="inclu-label" for="inclu-offset"><?php esc_html_e( 'Distance from edge', 'incluaccess' ); ?></label>
+					<div class="inclu-range">
+						<input type="range" id="inclu-offset" name="btn_offset" min="0" max="80" step="2" value="<?php echo esc_attr( $s['btn_offset'] ); ?>">
+						<output for="inclu-offset" id="inclu-offset-out"><?php echo esc_html( $s['btn_offset'] ); ?>px</output>
 					</div>
 				</div>
 			</div>
@@ -774,24 +774,24 @@ class EZ_Accessibility_Settings {
 	}
 
 	private static function section_features( array $s ): void {
-		self::section_open( 'features', __( 'Features', 'ez-accessibility' ), __( 'Choose which tools appear in the visitor panel. Turned-off tools are hidden completely.', 'ez-accessibility' ) );
+		self::section_open( 'features', __( 'Features', 'incluaccess' ), __( 'Choose which tools appear in the visitor panel. Turned-off tools are hidden completely.', 'incluaccess' ) );
 		$groups = [
-			'visual'  => __( 'Display', 'ez-accessibility' ),
-			'reading' => __( 'Reading', 'ez-accessibility' ),
-			'motion'  => __( 'Motion & pointer', 'ez-accessibility' ),
+			'visual'  => __( 'Display', 'incluaccess' ),
+			'reading' => __( 'Reading', 'incluaccess' ),
+			'motion'  => __( 'Motion & pointer', 'incluaccess' ),
 		];
 		$copy = self::feature_copy();
 		?>
-			<div class="eza-bulk">
-				<span id="eza-feat-count" aria-live="polite"></span>
-				<span class="eza-bulk-actions">
-					<button type="button" class="eza-link-btn" data-bulk="on"><?php esc_html_e( 'Enable all', 'ez-accessibility' ); ?></button>
-					<button type="button" class="eza-link-btn" data-bulk="off"><?php esc_html_e( 'Disable all', 'ez-accessibility' ); ?></button>
+			<div class="inclu-bulk">
+				<span id="inclu-feat-count" aria-live="polite"></span>
+				<span class="inclu-bulk-actions">
+					<button type="button" class="inclu-link-btn" data-bulk="on"><?php esc_html_e( 'Enable all', 'incluaccess' ); ?></button>
+					<button type="button" class="inclu-link-btn" data-bulk="off"><?php esc_html_e( 'Disable all', 'incluaccess' ); ?></button>
 				</span>
 			</div>
 			<?php foreach ( $groups as $group => $group_label ) : ?>
-				<h3 class="eza-group-title"><?php echo esc_html( $group_label ); ?></h3>
-				<div class="eza-feature-grid">
+				<h3 class="inclu-group-title"><?php echo esc_html( $group_label ); ?></h3>
+				<div class="inclu-feature-grid">
 					<?php
 					foreach ( self::features() as $key => $meta ) :
 						if ( $meta['group'] !== $group ) {
@@ -799,14 +799,14 @@ class EZ_Accessibility_Settings {
 						}
 						[ $title, $desc ] = $copy[ $key ];
 						?>
-						<label class="eza-feature">
-							<span class="eza-feature-icon"><?php self::the_icon( $meta['icon'] ); ?></span>
-							<span class="eza-feature-text">
+						<label class="inclu-feature">
+							<span class="inclu-feature-icon"><?php self::the_icon( $meta['icon'] ); ?></span>
+							<span class="inclu-feature-text">
 								<strong><?php echo esc_html( $title ); ?></strong>
 								<span><?php echo esc_html( $desc ); ?></span>
 							</span>
 							<input type="hidden" name="<?php echo esc_attr( $key ); ?>" value="0">
-							<input type="checkbox" class="eza-switch" role="switch" name="<?php echo esc_attr( $key ); ?>" value="1" data-feature="<?php echo esc_attr( $key ); ?>" <?php checked( (bool) $s[ $key ] ); ?>>
+							<input type="checkbox" class="inclu-switch" role="switch" name="<?php echo esc_attr( $key ); ?>" value="1" data-feature="<?php echo esc_attr( $key ); ?>" <?php checked( (bool) $s[ $key ] ); ?>>
 						</label>
 					<?php endforeach; ?>
 				</div>
@@ -816,7 +816,7 @@ class EZ_Accessibility_Settings {
 	}
 
 	private static function section_visibility( array $s, array $selected_ids ): void {
-		self::section_open( 'visibility', __( 'Visibility', 'ez-accessibility' ), __( 'Show the accessibility button everywhere, or only on the pages you pick.', 'ez-accessibility' ) );
+		self::section_open( 'visibility', __( 'Visibility', 'incluaccess' ), __( 'Show the accessibility button everywhere, or only on the pages you pick.', 'incluaccess' ) );
 		$query     = [
 			'post_type'      => [ 'page', 'post' ],
 			'posts_per_page' => 500,
@@ -833,52 +833,52 @@ class EZ_Accessibility_Settings {
 			$all_posts = array_merge( get_posts( array_merge( $query, [ 'post__in' => array_values( $missing ), 'posts_per_page' => count( $missing ) ] ) ), $all_posts );
 		}
 		?>
-			<div class="eza-choice-grid" role="radiogroup" aria-label="<?php esc_attr_e( 'Show widget on', 'ez-accessibility' ); ?>">
-				<label class="eza-choice">
+			<div class="inclu-choice-grid" role="radiogroup" aria-label="<?php esc_attr_e( 'Show widget on', 'incluaccess' ); ?>">
+				<label class="inclu-choice">
 					<input type="radio" name="visibility_mode" value="all" <?php checked( $s['visibility_mode'], 'all' ); ?>>
-					<span class="eza-choice-body">
-						<strong><?php esc_html_e( 'Entire site', 'ez-accessibility' ); ?></strong>
-						<span><?php esc_html_e( 'Recommended. Every page gets the accessibility button.', 'ez-accessibility' ); ?></span>
+					<span class="inclu-choice-body">
+						<strong><?php esc_html_e( 'Entire site', 'incluaccess' ); ?></strong>
+						<span><?php esc_html_e( 'Recommended. Every page gets the accessibility button.', 'incluaccess' ); ?></span>
 					</span>
 				</label>
-				<label class="eza-choice">
+				<label class="inclu-choice">
 					<input type="radio" name="visibility_mode" value="selected" <?php checked( $s['visibility_mode'], 'selected' ); ?>>
-					<span class="eza-choice-body">
-						<strong><?php esc_html_e( 'Selected pages only', 'ez-accessibility' ); ?></strong>
-						<span><?php esc_html_e( 'Pick specific pages and posts from a list.', 'ez-accessibility' ); ?></span>
+					<span class="inclu-choice-body">
+						<strong><?php esc_html_e( 'Selected pages only', 'incluaccess' ); ?></strong>
+						<span><?php esc_html_e( 'Pick specific pages and posts from a list.', 'incluaccess' ); ?></span>
 					</span>
 				</label>
 			</div>
 
-			<div class="eza-card eza-picker" id="eza-page-picker"<?php if ( 'selected' !== $s['visibility_mode'] ) { echo ' hidden'; } ?>>
-				<div class="eza-picker-bar">
-					<label class="eza-search">
+			<div class="inclu-card inclu-picker" id="inclu-page-picker"<?php if ( 'selected' !== $s['visibility_mode'] ) { echo ' hidden'; } ?>>
+				<div class="inclu-picker-bar">
+					<label class="inclu-search">
 						<?php self::the_icon( 'search' ); ?>
-						<span class="screen-reader-text"><?php esc_html_e( 'Search pages', 'ez-accessibility' ); ?></span>
-						<input type="search" id="eza-page-search" class="eza-input" placeholder="<?php esc_attr_e( 'Search pages and posts…', 'ez-accessibility' ); ?>">
+						<span class="screen-reader-text"><?php esc_html_e( 'Search pages', 'incluaccess' ); ?></span>
+						<input type="search" id="inclu-page-search" class="inclu-input" placeholder="<?php esc_attr_e( 'Search pages and posts…', 'incluaccess' ); ?>">
 					</label>
-					<span class="eza-picker-count" id="eza-picker-count" aria-live="polite"></span>
-					<button type="button" class="eza-link-btn" id="eza-select-all"><?php esc_html_e( 'Select all', 'ez-accessibility' ); ?></button>
-					<button type="button" class="eza-link-btn" id="eza-select-none"><?php esc_html_e( 'Clear', 'ez-accessibility' ); ?></button>
+					<span class="inclu-picker-count" id="inclu-picker-count" aria-live="polite"></span>
+					<button type="button" class="inclu-link-btn" id="inclu-select-all"><?php esc_html_e( 'Select all', 'incluaccess' ); ?></button>
+					<button type="button" class="inclu-link-btn" id="inclu-select-none"><?php esc_html_e( 'Clear', 'incluaccess' ); ?></button>
 				</div>
 				<?php if ( empty( $all_posts ) ) : ?>
-					<p class="eza-empty"><?php esc_html_e( 'No published pages or posts yet.', 'ez-accessibility' ); ?></p>
+					<p class="inclu-empty"><?php esc_html_e( 'No published pages or posts yet.', 'incluaccess' ); ?></p>
 				<?php else : ?>
-					<div class="eza-page-list" id="eza-page-list">
+					<div class="inclu-page-list" id="inclu-page-list">
 						<?php
 						foreach ( $all_posts as $post_item ) :
 							$type_obj   = get_post_type_object( $post_item->post_type );
 							$type_label = $type_obj ? $type_obj->labels->singular_name : $post_item->post_type;
-							$title      = '' !== $post_item->post_title ? $post_item->post_title : __( '(no title)', 'ez-accessibility' );
+							$title      = '' !== $post_item->post_title ? $post_item->post_title : __( '(no title)', 'incluaccess' );
 							?>
-							<label class="eza-page-item">
+							<label class="inclu-page-item">
 								<input type="checkbox" name="visibility_pages[]" value="<?php echo esc_attr( $post_item->ID ); ?>" <?php checked( in_array( $post_item->ID, $selected_ids, true ) ); ?>>
-								<span class="eza-page-title"><?php echo esc_html( $title ); ?></span>
-								<span class="eza-page-type"><?php echo esc_html( $type_label ); ?></span>
+								<span class="inclu-page-title"><?php echo esc_html( $title ); ?></span>
+								<span class="inclu-page-type"><?php echo esc_html( $type_label ); ?></span>
 							</label>
 						<?php endforeach; ?>
 					</div>
-					<p class="eza-empty" id="eza-page-empty" hidden><?php esc_html_e( 'Nothing matches your search.', 'ez-accessibility' ); ?></p>
+					<p class="inclu-empty" id="inclu-page-empty" hidden><?php esc_html_e( 'Nothing matches your search.', 'incluaccess' ); ?></p>
 				<?php endif; ?>
 			</div>
 		</section>
@@ -886,95 +886,95 @@ class EZ_Accessibility_Settings {
 	}
 
 	private static function section_languages(): void {
-		self::section_open( 'languages', __( 'Languages', 'ez-accessibility' ), __( 'The panel speaks your visitor’s language automatically, based on the page’s lang attribute. 28 languages are built in, left-to-right and right-to-left. Edit any of them, or add your own.', 'ez-accessibility' ) );
+		self::section_open( 'languages', __( 'Languages', 'incluaccess' ), __( 'The panel speaks your visitor’s language automatically, based on the page’s lang attribute. 28 languages are built in, left-to-right and right-to-left. Edit any of them, or add your own.', 'incluaccess' ) );
 		$field_labels = [
-			'panel_title'     => __( 'Panel title', 'ez-accessibility' ),
-			'open_menu'       => __( 'Button label (screen readers)', 'ez-accessibility' ),
-			'close'           => __( 'Close', 'ez-accessibility' ),
-			'group_visual'    => __( 'Group: Display', 'ez-accessibility' ),
-			'group_reading'   => __( 'Group: Reading', 'ez-accessibility' ),
-			'group_motion'    => __( 'Group: Motion', 'ez-accessibility' ),
-			'font_size'       => __( 'Text size', 'ez-accessibility' ),
-			'high_contrast'   => __( 'High contrast', 'ez-accessibility' ),
-			'invert'          => __( 'Invert colors', 'ez-accessibility' ),
-			'grayscale'       => __( 'Grayscale', 'ez-accessibility' ),
-			'highlight_links' => __( 'Highlight links', 'ez-accessibility' ),
-			'readable_font'   => __( 'Readable font', 'ez-accessibility' ),
-			'letter_spacing'  => __( 'Letter spacing', 'ez-accessibility' ),
-			'pause_anim'      => __( 'Pause animations', 'ez-accessibility' ),
-			'large_cursor'    => __( 'Large cursor', 'ez-accessibility' ),
-			'decrease'        => __( 'Decrease (screen readers)', 'ez-accessibility' ),
-			'increase'        => __( 'Increase (screen readers)', 'ez-accessibility' ),
-			'reset'           => __( 'Reset button', 'ez-accessibility' ),
+			'panel_title'     => __( 'Panel title', 'incluaccess' ),
+			'open_menu'       => __( 'Button label (screen readers)', 'incluaccess' ),
+			'close'           => __( 'Close', 'incluaccess' ),
+			'group_visual'    => __( 'Group: Display', 'incluaccess' ),
+			'group_reading'   => __( 'Group: Reading', 'incluaccess' ),
+			'group_motion'    => __( 'Group: Motion', 'incluaccess' ),
+			'font_size'       => __( 'Text size', 'incluaccess' ),
+			'high_contrast'   => __( 'High contrast', 'incluaccess' ),
+			'invert'          => __( 'Invert colors', 'incluaccess' ),
+			'grayscale'       => __( 'Grayscale', 'incluaccess' ),
+			'highlight_links' => __( 'Highlight links', 'incluaccess' ),
+			'readable_font'   => __( 'Readable font', 'incluaccess' ),
+			'letter_spacing'  => __( 'Letter spacing', 'incluaccess' ),
+			'pause_anim'      => __( 'Pause animations', 'incluaccess' ),
+			'large_cursor'    => __( 'Large cursor', 'incluaccess' ),
+			'decrease'        => __( 'Decrease (screen readers)', 'incluaccess' ),
+			'increase'        => __( 'Increase (screen readers)', 'incluaccess' ),
+			'reset'           => __( 'Reset button', 'incluaccess' ),
 		];
 		?>
-			<input type="hidden" name="ez_accessibility_languages" id="eza-languages-field" value="">
+			<input type="hidden" name="incluaccess_languages" id="inclu-languages-field" value="">
 
-			<div class="eza-card">
-				<div class="eza-field eza-field--inline">
+			<div class="inclu-card">
+				<div class="inclu-field inclu-field--inline">
 					<div>
-						<label class="eza-label" for="eza-fallback-lang"><?php esc_html_e( 'Fallback language', 'ez-accessibility' ); ?></label>
-						<p class="eza-hint"><?php esc_html_e( 'Used when a page’s language isn’t in the list, and for any label you leave empty.', 'ez-accessibility' ); ?></p>
+						<label class="inclu-label" for="inclu-fallback-lang"><?php esc_html_e( 'Fallback language', 'incluaccess' ); ?></label>
+						<p class="inclu-hint"><?php esc_html_e( 'Used when a page’s language isn’t in the list, and for any label you leave empty.', 'incluaccess' ); ?></p>
 					</div>
-					<select id="eza-fallback-lang" class="eza-input eza-select"></select>
+					<select id="inclu-fallback-lang" class="inclu-input inclu-select"></select>
 				</div>
 			</div>
 
-			<div class="eza-card eza-card--flush">
-				<div class="eza-lang-bar">
-					<label class="eza-lang-pick">
-						<span class="screen-reader-text"><?php esc_html_e( 'Language to edit', 'ez-accessibility' ); ?></span>
+			<div class="inclu-card inclu-card--flush">
+				<div class="inclu-lang-bar">
+					<label class="inclu-lang-pick">
+						<span class="screen-reader-text"><?php esc_html_e( 'Language to edit', 'incluaccess' ); ?></span>
 						<?php self::the_icon( 'globe' ); ?>
-						<select id="eza-lang-select" class="eza-input eza-select"></select>
+						<select id="inclu-lang-select" class="inclu-input inclu-select"></select>
 					</label>
-					<span class="eza-lang-meta" id="eza-lang-meta"></span>
-					<button type="button" class="eza-btn eza-btn--ghost eza-btn--sm" id="eza-lang-add-toggle" aria-expanded="false" aria-controls="eza-lang-add">
-						<?php esc_html_e( '+ Add language', 'ez-accessibility' ); ?>
+					<span class="inclu-lang-meta" id="inclu-lang-meta"></span>
+					<button type="button" class="inclu-btn inclu-btn--ghost inclu-btn--sm" id="inclu-lang-add-toggle" aria-expanded="false" aria-controls="inclu-lang-add">
+						<?php esc_html_e( '+ Add language', 'incluaccess' ); ?>
 					</button>
 				</div>
 
-				<div class="eza-lang-add" id="eza-lang-add" hidden>
-					<div class="eza-lang-add-grid">
-						<label class="eza-lang-field">
-							<span><?php esc_html_e( 'Language code', 'ez-accessibility' ); ?></span>
-							<input type="text" class="eza-input" id="eza-new-code" placeholder="sw" maxlength="20" spellcheck="false" autocomplete="off" aria-describedby="eza-new-code-hint">
+				<div class="inclu-lang-add" id="inclu-lang-add" hidden>
+					<div class="inclu-lang-add-grid">
+						<label class="inclu-lang-field">
+							<span><?php esc_html_e( 'Language code', 'incluaccess' ); ?></span>
+							<input type="text" class="inclu-input" id="inclu-new-code" placeholder="sw" maxlength="20" spellcheck="false" autocomplete="off" aria-describedby="inclu-new-code-hint">
 						</label>
-						<label class="eza-lang-field">
-							<span><?php esc_html_e( 'Name', 'ez-accessibility' ); ?></span>
-							<input type="text" class="eza-input" id="eza-new-name" placeholder="Kiswahili" maxlength="60">
+						<label class="inclu-lang-field">
+							<span><?php esc_html_e( 'Name', 'incluaccess' ); ?></span>
+							<input type="text" class="inclu-input" id="inclu-new-name" placeholder="Kiswahili" maxlength="60">
 						</label>
-						<fieldset class="eza-lang-field eza-dir-field">
-							<legend><?php esc_html_e( 'Direction', 'ez-accessibility' ); ?></legend>
-							<div class="eza-segmented">
-								<label class="eza-segment"><input type="radio" name="ez_accessibility_new_dir" value="ltr" checked form="eza-none"><span><?php esc_html_e( 'Left to right', 'ez-accessibility' ); ?></span></label>
-								<label class="eza-segment"><input type="radio" name="ez_accessibility_new_dir" value="rtl" form="eza-none"><span><?php esc_html_e( 'Right to left', 'ez-accessibility' ); ?></span></label>
+						<fieldset class="inclu-lang-field inclu-dir-field">
+							<legend><?php esc_html_e( 'Direction', 'incluaccess' ); ?></legend>
+							<div class="inclu-segmented">
+								<label class="inclu-segment"><input type="radio" name="incluaccess_new_dir" value="ltr" checked form="inclu-none"><span><?php esc_html_e( 'Left to right', 'incluaccess' ); ?></span></label>
+								<label class="inclu-segment"><input type="radio" name="incluaccess_new_dir" value="rtl" form="inclu-none"><span><?php esc_html_e( 'Right to left', 'incluaccess' ); ?></span></label>
 							</div>
 						</fieldset>
 					</div>
-					<p class="eza-hint" id="eza-new-code-hint"><?php esc_html_e( 'Use the code from your page’s lang attribute, e.g. “sw” for Swahili or “pt-br” for Brazilian Portuguese. A regional code like “pt-br” takes priority over “pt”.', 'ez-accessibility' ); ?></p>
-					<p class="eza-error" id="eza-new-error" role="alert" hidden></p>
-					<div class="eza-lang-add-actions">
-						<button type="button" class="eza-btn eza-btn--ghost eza-btn--sm" id="eza-lang-add-cancel"><?php esc_html_e( 'Cancel', 'ez-accessibility' ); ?></button>
-						<button type="button" class="eza-btn eza-btn--primary eza-btn--sm" id="eza-lang-add-save"><?php esc_html_e( 'Add language', 'ez-accessibility' ); ?></button>
+					<p class="inclu-hint" id="inclu-new-code-hint"><?php esc_html_e( 'Use the code from your page’s lang attribute, e.g. “sw” for Swahili or “pt-br” for Brazilian Portuguese. A regional code like “pt-br” takes priority over “pt”.', 'incluaccess' ); ?></p>
+					<p class="inclu-error" id="inclu-new-error" role="alert" hidden></p>
+					<div class="inclu-lang-add-actions">
+						<button type="button" class="inclu-btn inclu-btn--ghost inclu-btn--sm" id="inclu-lang-add-cancel"><?php esc_html_e( 'Cancel', 'incluaccess' ); ?></button>
+						<button type="button" class="inclu-btn inclu-btn--primary inclu-btn--sm" id="inclu-lang-add-save"><?php esc_html_e( 'Add language', 'incluaccess' ); ?></button>
 					</div>
 				</div>
 
-				<div class="eza-lang-panel">
-					<p class="eza-hint eza-lang-hint" id="eza-lang-hint"></p>
-					<div class="eza-lang-grid" id="eza-lang-grid">
+				<div class="inclu-lang-panel">
+					<p class="inclu-hint inclu-lang-hint" id="inclu-lang-hint"></p>
+					<div class="inclu-lang-grid" id="inclu-lang-grid">
 						<?php foreach ( $field_labels as $key => $label ) : ?>
-							<label class="eza-lang-field">
+							<label class="inclu-lang-field">
 								<span><?php echo esc_html( $label ); ?></span>
-								<input type="text" class="eza-input" maxlength="120" data-string="<?php echo esc_attr( $key ); ?>">
+								<input type="text" class="inclu-input" maxlength="120" data-string="<?php echo esc_attr( $key ); ?>">
 							</label>
 						<?php endforeach; ?>
 					</div>
-					<div class="eza-lang-foot">
-						<button type="button" class="eza-link-btn" id="eza-lang-restore">
+					<div class="inclu-lang-foot">
+						<button type="button" class="inclu-link-btn" id="inclu-lang-restore">
 							<?php self::the_icon( 'undo' ); ?>
 							<span></span>
 						</button>
-						<button type="button" class="eza-link-btn eza-link-btn--danger" id="eza-lang-delete" hidden><span></span></button>
+						<button type="button" class="inclu-link-btn inclu-link-btn--danger" id="inclu-lang-delete" hidden><span></span></button>
 					</div>
 				</div>
 			</div>
@@ -983,26 +983,26 @@ class EZ_Accessibility_Settings {
 	}
 
 	private static function section_advanced( array $s ): void {
-		self::section_open( 'advanced', __( 'Advanced', 'ez-accessibility' ), __( 'Fine-tuning for themes that need it. Most sites can leave these alone.', 'ez-accessibility' ) );
+		self::section_open( 'advanced', __( 'Advanced', 'incluaccess' ), __( 'Fine-tuning for themes that need it. Most sites can leave these alone.', 'incluaccess' ) );
 		?>
-			<div class="eza-card">
-				<div class="eza-field eza-field--inline">
+			<div class="inclu-card">
+				<div class="inclu-field inclu-field--inline">
 					<div>
-						<label class="eza-label" for="eza-z-index"><?php esc_html_e( 'Stacking order (z-index)', 'ez-accessibility' ); ?></label>
-						<p class="eza-hint"><?php esc_html_e( 'Raise this if a sticky header or chat bubble covers the button.', 'ez-accessibility' ); ?></p>
+						<label class="inclu-label" for="inclu-z-index"><?php esc_html_e( 'Stacking order (z-index)', 'incluaccess' ); ?></label>
+						<p class="inclu-hint"><?php esc_html_e( 'Raise this if a sticky header or chat bubble covers the button.', 'incluaccess' ); ?></p>
 					</div>
-					<input type="number" id="eza-z-index" name="z_index" value="<?php echo esc_attr( $s['z_index'] ); ?>" min="1" max="2147483647" class="eza-input eza-input--short">
+					<input type="number" id="inclu-z-index" name="z_index" value="<?php echo esc_attr( $s['z_index'] ); ?>" min="1" max="2147483647" class="inclu-input inclu-input--short">
 				</div>
 			</div>
 
-			<div class="eza-card eza-card--muted">
-				<h3 class="eza-card-title"><?php esc_html_e( 'JavaScript API', 'ez-accessibility' ); ?></h3>
-				<p class="eza-hint"><?php esc_html_e( 'Control the panel from your theme, or refresh its language after a multilingual plugin switches languages:', 'ez-accessibility' ); ?></p>
-				<pre class="eza-code"><code>window.EZAccessibility.open();
-window.EZAccessibility.close();
-window.EZAccessibility.toggle();
-window.EZAccessibility.reset();
-window.EZAccessibility.refresh();</code></pre>
+			<div class="inclu-card inclu-card--muted">
+				<h3 class="inclu-card-title"><?php esc_html_e( 'JavaScript API', 'incluaccess' ); ?></h3>
+				<p class="inclu-hint"><?php esc_html_e( 'Control the panel from your theme, or refresh its language after a multilingual plugin switches languages:', 'incluaccess' ); ?></p>
+				<pre class="inclu-code"><code>window.IncluAccess.open();
+window.IncluAccess.close();
+window.IncluAccess.toggle();
+window.IncluAccess.reset();
+window.IncluAccess.refresh();</code></pre>
 			</div>
 		</section>
 		<?php
@@ -1010,35 +1010,35 @@ window.EZAccessibility.refresh();</code></pre>
 
 	// ── Live preview (sticky sidebar) ─────────────────────────────────────────
 	private static function render_preview( array $s ): void {
-		// Labels are filled in by eza-admin.js in the language being edited.
+		// Labels are filled in by inclu-admin.js in the language being edited.
 		?>
-		<aside class="eza-preview" aria-label="<?php esc_attr_e( 'Live preview', 'ez-accessibility' ); ?>">
-			<div class="eza-preview-head">
-				<span><?php esc_html_e( 'Live preview', 'ez-accessibility' ); ?></span>
-				<button type="button" class="eza-link-btn" id="eza-preview-toggle" aria-pressed="true"><?php esc_html_e( 'Panel', 'ez-accessibility' ); ?></button>
+		<aside class="inclu-preview" aria-label="<?php esc_attr_e( 'Live preview', 'incluaccess' ); ?>">
+			<div class="inclu-preview-head">
+				<span><?php esc_html_e( 'Live preview', 'incluaccess' ); ?></span>
+				<button type="button" class="inclu-link-btn" id="inclu-preview-toggle" aria-pressed="true"><?php esc_html_e( 'Panel', 'incluaccess' ); ?></button>
 			</div>
-			<div class="eza-browser" id="eza-browser" data-pos="<?php echo esc_attr( $s['btn_position'] ); ?>" data-size="<?php echo esc_attr( $s['btn_size'] ); ?>" data-open="1" style="--eza-offset:<?php echo esc_attr( $s['btn_offset'] ); ?>">
-				<div class="eza-browser-bar" aria-hidden="true"><?php echo esc_html( (string) wp_parse_url( home_url(), PHP_URL_HOST ) ); ?></div>
-				<div class="eza-browser-page" aria-hidden="true">
-					<div class="eza-sk eza-sk--hero"></div>
-					<div class="eza-sk eza-sk--line"></div>
-					<div class="eza-sk eza-sk--line eza-sk--short"></div>
-					<div class="eza-sk eza-sk--line"></div>
-					<div class="eza-sk-cols"><div class="eza-sk eza-sk--card"></div><div class="eza-sk eza-sk--card"></div></div>
+			<div class="inclu-browser" id="inclu-browser" data-pos="<?php echo esc_attr( $s['btn_position'] ); ?>" data-size="<?php echo esc_attr( $s['btn_size'] ); ?>" data-open="1" style="--inclu-offset:<?php echo esc_attr( $s['btn_offset'] ); ?>">
+				<div class="inclu-browser-bar" aria-hidden="true"><?php echo esc_html( (string) wp_parse_url( home_url(), PHP_URL_HOST ) ); ?></div>
+				<div class="inclu-browser-page" aria-hidden="true">
+					<div class="inclu-sk inclu-sk--hero"></div>
+					<div class="inclu-sk inclu-sk--line"></div>
+					<div class="inclu-sk inclu-sk--line inclu-sk--short"></div>
+					<div class="inclu-sk inclu-sk--line"></div>
+					<div class="inclu-sk-cols"><div class="inclu-sk inclu-sk--card"></div><div class="inclu-sk inclu-sk--card"></div></div>
 				</div>
-				<div class="eza-mock" aria-hidden="true">
-					<div class="eza-mock-panel">
-						<div class="eza-mock-head"><span id="eza-mock-title"></span><i></i></div>
-						<div class="eza-mock-grid" id="eza-mock-grid">
+				<div class="inclu-mock" aria-hidden="true">
+					<div class="inclu-mock-panel">
+						<div class="inclu-mock-head"><span id="inclu-mock-title"></span><i></i></div>
+						<div class="inclu-mock-grid" id="inclu-mock-grid">
 							<?php foreach ( self::features() as $key => $meta ) : ?>
-								<span class="eza-mock-tile" data-feature="<?php echo esc_attr( $key ); ?>"<?php if ( ! $s[ $key ] ) { echo ' hidden'; } ?>>
+								<span class="inclu-mock-tile" data-feature="<?php echo esc_attr( $key ); ?>"<?php if ( ! $s[ $key ] ) { echo ' hidden'; } ?>>
 									<?php self::the_icon( $meta['icon'] ); ?>
 									<span data-string="<?php echo esc_attr( substr( $key, 5 ) ); ?>"></span>
 								</span>
 							<?php endforeach; ?>
 						</div>
 					</div>
-					<span class="eza-mock-btn" id="eza-mock-btn"><?php
+					<span class="inclu-mock-btn" id="inclu-mock-btn"><?php
 					$custom_url = self::custom_icon_url( (int) $s['btn_custom_icon'] );
 					if ( 'custom' === $s['btn_icon'] && $custom_url ) {
 						echo '<img src="' . esc_url( $custom_url ) . '" alt="">';
@@ -1048,7 +1048,7 @@ window.EZAccessibility.refresh();</code></pre>
 				?></span>
 				</div>
 			</div>
-			<p class="eza-hint eza-preview-note"><?php esc_html_e( 'Preview updates as you edit. Changes go live when you save.', 'ez-accessibility' ); ?></p>
+			<p class="inclu-hint inclu-preview-note"><?php esc_html_e( 'Preview updates as you edit. Changes go live when you save.', 'incluaccess' ); ?></p>
 		</aside>
 		<?php
 	}

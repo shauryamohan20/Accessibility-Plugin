@@ -1,18 +1,18 @@
 /**
- * EZ Accessibility — Admin JS
+ * IncluAccess — Admin JS
  * Tabs, live preview, color fields, page picker, unsaved-changes bar.
  * Vanilla JS, no dependencies.
  */
 (function () {
   'use strict';
 
-  const form = document.getElementById('eza-form');
+  const form = document.getElementById('inclu-form');
   if (!form) return;
 
-  const I18N    = (window.EZAccessibilityAdmin && window.EZAccessibilityAdmin.i18n) || {};
+  const I18N    = (window.IncluAccessAdmin && window.IncluAccessAdmin.i18n) || {};
   const $       = (sel, ctx) => (ctx || document).querySelector(sel);
   const $$      = (sel, ctx) => Array.from((ctx || document).querySelectorAll(sel));
-  const browser = $('#eza-browser');
+  const browser = $('#inclu-browser');
 
   // ── Tabs (roving tabindex, arrow-key support) ─────────────────────────────
   function setupTabs(tabs, getPanel, onSelect) {
@@ -40,8 +40,8 @@
     return select;
   }
 
-  const navTabs  = $$('.eza-nav-item');
-  const tabField = $('#eza-tab-field');
+  const navTabs  = $$('.inclu-nav-item');
+  const tabField = $('#inclu-tab-field');
   const selectNav = setupTabs(
     navTabs,
     function (t) { return document.getElementById(t.getAttribute('aria-controls')); },
@@ -73,25 +73,25 @@
 
   const bgHex   = $('input[name="btn_bg_color"]');
   const iconHex = $('input[name="btn_icon_color"]');
-  const ratioEl = $('#eza-contrast');
+  const ratioEl = $('#inclu-contrast');
 
   function updateColors() {
     const bg = isHex(bgHex.value) ? bgHex.value : '#2346d3';
     const fg = isHex(iconHex.value) ? iconHex.value : '#ffffff';
-    form.style.setProperty('--eza-bg', bg); // shared by the preview and the icon choices
-    form.style.setProperty('--eza-fg', fg);
+    form.style.setProperty('--inclu-bg', bg); // shared by the preview and the icon choices
+    form.style.setProperty('--inclu-fg', fg);
 
     const r = contrast(bg, fg);
     ratioEl.classList.toggle('is-low', r < 3);
-    $('.eza-contrast-ratio', ratioEl).textContent = r.toFixed(1) + ':1';
-    $('.eza-contrast-text', ratioEl).textContent = r < 3 ? I18N.contrastLow : I18N.contrastOk;
+    $('.inclu-contrast-ratio', ratioEl).textContent = r.toFixed(1) + ':1';
+    $('.inclu-contrast-text', ratioEl).textContent = r < 3 ? I18N.contrastLow : I18N.contrastOk;
   }
 
   // ── Color fields: swatches + native picker + hex input stay in sync ───────
   $$('[data-color-field]').forEach(function (field) {
     const picker   = $('[data-color-picker]', field);
     const hex      = $('[data-color-hex]', field);
-    const swatches = $$('.eza-swatch', field);
+    const swatches = $$('.inclu-swatch', field);
 
     function set(value, from) {
       value = value.toLowerCase();
@@ -123,16 +123,16 @@
   // ── Button icon ───────────────────────────────────────────────────────────
   // Built-in choices, or an image from the WordPress media library. Only the
   // attachment ID is submitted; the server re-checks the file on save.
-  const ICON_CFG   = (window.EZAccessibilityAdmin && window.EZAccessibilityAdmin.icon) || { mimes: [], maxBytes: 0 };
+  const ICON_CFG   = (window.IncluAccessAdmin && window.IncluAccessAdmin.icon) || { mimes: [], maxBytes: 0 };
   const iconRadios = $$('input[name="btn_icon"]');
-  const customId   = $('#eza-custom-icon');
-  const customFace = $('#eza-custom-face');
-  const uploadBox  = $('#eza-upload');
-  const pickBtn    = $('#eza-icon-pick');
-  const removeBtn  = $('#eza-icon-remove');
-  const iconError  = $('#eza-icon-error');
-  const mockBtn    = $('#eza-mock-btn');
-  const UPLOAD_SVG = $('#eza-upload-icon').innerHTML; // static icon markup from the page
+  const customId   = $('#inclu-custom-icon');
+  const customFace = $('#inclu-custom-face');
+  const uploadBox  = $('#inclu-upload');
+  const pickBtn    = $('#inclu-icon-pick');
+  const removeBtn  = $('#inclu-icon-remove');
+  const iconError  = $('#inclu-icon-error');
+  const mockBtn    = $('#inclu-mock-btn');
+  const UPLOAD_SVG = $('#inclu-upload-icon').innerHTML; // static icon markup from the page
   let mediaFrame   = null;
 
   function showIconError(msg) {
@@ -181,7 +181,7 @@
         const sized = a.sizes && (a.sizes.medium || a.sizes.full);
         customId.value = String(parseInt(a.id, 10) || 0);
         setCustomImage((sized && sized.url) || a.url);
-        $('#eza-icon-custom').checked = true;
+        $('#inclu-icon-custom').checked = true;
         renderIconPreview();
         markDirty();
       });
@@ -222,28 +222,28 @@
     if (t.name === 'btn_position') browser.dataset.pos  = t.value;
   });
 
-  const offset    = $('#eza-offset');
-  const offsetOut = $('#eza-offset-out');
+  const offset    = $('#inclu-offset');
+  const offsetOut = $('#inclu-offset-out');
   offset.addEventListener('input', function () {
     offsetOut.textContent = offset.value + 'px';
-    browser.style.setProperty('--eza-offset', offset.value);
+    browser.style.setProperty('--inclu-offset', offset.value);
   });
 
-  $('#eza-preview-toggle').addEventListener('click', function () {
+  $('#inclu-preview-toggle').addEventListener('click', function () {
     const open = browser.dataset.open !== '1';
     browser.dataset.open = open ? '1' : '0';
     this.setAttribute('aria-pressed', open ? 'true' : 'false');
   });
 
   // ── Features ──────────────────────────────────────────────────────────────
-  const switches = $$('.eza-switch');
-  const featCount = $('#eza-feat-count');
+  const switches = $$('.inclu-switch');
+  const featCount = $('#inclu-feat-count');
 
   function updateFeatures() {
     let on = 0;
     switches.forEach(function (sw) {
       if (sw.checked) on++;
-      const tile = $('.eza-mock-tile[data-feature="' + sw.dataset.feature + '"]');
+      const tile = $('.inclu-mock-tile[data-feature="' + sw.dataset.feature + '"]');
       if (tile) tile.hidden = !sw.checked;
     });
     featCount.textContent = (I18N.featCount || '%1$d of %2$d turned on').replace('%1$d', on).replace('%2$d', switches.length);
@@ -260,11 +260,11 @@
   });
 
   // ── Languages ─────────────────────────────────────────────────────────────
-  // Built-in labels come from eza-i18n.js. The model only stores what the site
+  // Built-in labels come from inclu-i18n.js. The model only stores what the site
   // owner changed (overrides) plus their own languages, and is submitted as
   // one JSON field.
-  const CAT   = window.EZAccessibilityI18n;
-  const SAVED = (window.EZAccessibilityAdmin && window.EZAccessibilityAdmin.langs) || {};
+  const CAT   = window.IncluAccessI18n;
+  const SAVED = (window.IncluAccessAdmin && window.IncluAccessAdmin.langs) || {};
   const model = {
     fallback: SAVED.fallback || 'en',
     custom:   Object.assign({}, SAVED.custom),
@@ -272,14 +272,14 @@
   };
   const MAX_CUSTOM = 50;
 
-  const langField  = $('#eza-languages-field');
-  const langSelect = $('#eza-lang-select');
-  const fallbackEl = $('#eza-fallback-lang');
-  const langInputs = $$('#eza-lang-grid [data-string]');
-  const langMeta   = $('#eza-lang-meta');
-  const langHint   = $('#eza-lang-hint');
-  const restoreBtn = $('#eza-lang-restore');
-  const deleteBtn  = $('#eza-lang-delete');
+  const langField  = $('#inclu-languages-field');
+  const langSelect = $('#inclu-lang-select');
+  const fallbackEl = $('#inclu-fallback-lang');
+  const langInputs = $$('#inclu-lang-grid [data-string]');
+  const langMeta   = $('#inclu-lang-meta');
+  const langHint   = $('#inclu-lang-hint');
+  const restoreBtn = $('#inclu-lang-restore');
+  const deleteBtn  = $('#inclu-lang-delete');
 
   function isBuiltin(code) { return Object.prototype.hasOwnProperty.call(CAT.langs, code); }
   function exists(code)    { return isBuiltin(code) || Object.prototype.hasOwnProperty.call(model.custom, code); }
@@ -328,11 +328,11 @@
   }
 
   function renderPreviewLabels() {
-    const mock = $('.eza-mock-panel');
+    const mock = $('.inclu-mock-panel');
     mock.setAttribute('dir', langDir(current));
     mock.setAttribute('lang', current);
-    $('#eza-mock-title').textContent = effective(current, 'panel_title');
-    $$('.eza-mock-tile [data-string]').forEach(function (span) {
+    $('#inclu-mock-title').textContent = effective(current, 'panel_title');
+    $$('.inclu-mock-tile [data-string]').forEach(function (span) {
       span.textContent = effective(current, span.dataset.string);
     });
   }
@@ -426,11 +426,11 @@
   });
 
   // Add-a-language form
-  const addPanel  = $('#eza-lang-add');
-  const addToggle = $('#eza-lang-add-toggle');
-  const newCode   = $('#eza-new-code');
-  const newName   = $('#eza-new-name');
-  const newError  = $('#eza-new-error');
+  const addPanel  = $('#inclu-lang-add');
+  const addToggle = $('#inclu-lang-add-toggle');
+  const newCode   = $('#inclu-new-code');
+  const newName   = $('#inclu-new-name');
+  const newError  = $('#inclu-new-error');
 
   function showAdd(open) {
     addPanel.hidden = !open;
@@ -452,7 +452,7 @@
     if (!name) return addError(I18N.nameRequired, newName);
     if (Object.keys(model.custom).length >= MAX_CUSTOM) return addError(I18N.tooMany, newCode);
 
-    const dir = ($('input[name="ez_accessibility_new_dir"]:checked') || {}).value === 'rtl' ? 'rtl' : 'ltr';
+    const dir = ($('input[name="incluaccess_new_dir"]:checked') || {}).value === 'rtl' ? 'rtl' : 'ltr';
     model.custom[code] = { name: name, dir: dir };
     current = code;
     showAdd(false);
@@ -462,8 +462,8 @@
   }
 
   addToggle.addEventListener('click', function () { showAdd(addPanel.hidden); });
-  $('#eza-lang-add-cancel').addEventListener('click', function () { showAdd(false); addToggle.focus(); });
-  $('#eza-lang-add-save').addEventListener('click', addLanguage);
+  $('#inclu-lang-add-cancel').addEventListener('click', function () { showAdd(false); addToggle.focus(); });
+  $('#inclu-lang-add-save').addEventListener('click', addLanguage);
   [newCode, newName].forEach(function (input) {
     input.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') { e.preventDefault(); addLanguage(); }
@@ -475,10 +475,10 @@
   refreshLanguages();
 
   // ── Visibility ────────────────────────────────────────────────────────────
-  const picker     = $('#eza-page-picker');
-  const pageItems  = $$('.eza-page-item');
-  const pickCount  = $('#eza-picker-count');
-  const emptyMsg   = $('#eza-page-empty');
+  const picker     = $('#inclu-page-picker');
+  const pageItems  = $$('.inclu-page-item');
+  const pickCount  = $('#inclu-picker-count');
+  const emptyMsg   = $('#inclu-page-empty');
 
   function updatePickCount() {
     const n = pageItems.filter(function (i) { return $('input', i).checked; }).length;
@@ -489,7 +489,7 @@
     r.addEventListener('change', function () { picker.hidden = r.value !== 'selected'; });
   });
 
-  const search = $('#eza-page-search');
+  const search = $('#inclu-page-search');
   search.addEventListener('input', function () {
     const q = search.value.trim().toLowerCase();
     let shown = 0;
@@ -509,27 +509,27 @@
     updatePickCount();
     markDirty();
   }
-  $('#eza-select-all').addEventListener('click', function () { bulkPages(true); });
-  $('#eza-select-none').addEventListener('click', function () { bulkPages(false); });
+  $('#inclu-select-all').addEventListener('click', function () { bulkPages(true); });
+  $('#inclu-select-none').addEventListener('click', function () { bulkPages(false); });
   pageItems.forEach(function (i) { $('input', i).addEventListener('change', updatePickCount); });
 
   // ── Unsaved changes ───────────────────────────────────────────────────────
-  const savebar  = $('#eza-savebar');
-  const saveMsg  = $('#eza-savebar-msg');
-  const discard  = $('#eza-discard');
-  const saveBtn  = $('#eza-save');
+  const savebar  = $('#inclu-savebar');
+  const saveMsg  = $('#inclu-savebar-msg');
+  const discard  = $('#inclu-discard');
+  const saveBtn  = $('#inclu-save');
   const snapshot = new URLSearchParams(new FormData(form)).toString();
   let dirty      = false;
   let submitting = false;
 
   function serialize() {
     const data = new FormData(form);
-    data.delete('ez_accessibility_tab');
+    data.delete('incluaccess_tab');
     return new URLSearchParams(data).toString();
   }
   const clean = (function () {
     const d = new URLSearchParams(snapshot);
-    d.delete('ez_accessibility_tab');
+    d.delete('incluaccess_tab');
     return d.toString();
   }());
 
@@ -574,16 +574,16 @@
   // flags so a reload doesn't show it (or the notices) again. ───────────────
   if (form.dataset.saved === '1') {
     const url = new URL(location.href);
-    if (!url.searchParams.has('ez-accessibility-icon-rejected')) {
-      const toast = $('#eza-toast');
+    if (!url.searchParams.has('incluaccess-icon-rejected')) {
+      const toast = $('#inclu-toast');
       toast.hidden = false;
       setTimeout(function () {
         toast.classList.add('is-leaving');
         toast.addEventListener('animationend', function () { toast.hidden = true; }, { once: true });
       }, 2600);
     }
-    url.searchParams.delete('ez-accessibility-saved');
-    url.searchParams.delete('ez-accessibility-icon-rejected');
+    url.searchParams.delete('incluaccess-saved');
+    url.searchParams.delete('incluaccess-icon-rejected');
     history.replaceState(null, '', url.toString());
   }
 

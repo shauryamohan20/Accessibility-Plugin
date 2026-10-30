@@ -8,17 +8,18 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
 
-function ez_accessibility_uninstall_site(): void {
+function incluaccess_uninstall_site(): void {
+	delete_option( 'incluaccess_settings' );
 	delete_option( 'ez_accessibility_settings' );
 	delete_option( 'qudra_accesskit_settings' );
 }
 
 if ( is_multisite() ) {
-	foreach ( get_sites( [ 'fields' => 'ids', 'number' => 0 ] ) as $ez_accessibility_site_id ) {
-		switch_to_blog( $ez_accessibility_site_id );
-		ez_accessibility_uninstall_site();
+	foreach ( get_sites( [ 'fields' => 'ids', 'number' => 0 ] ) as $incluaccess_site_id ) {
+		switch_to_blog( $incluaccess_site_id );
+		incluaccess_uninstall_site();
 		restore_current_blog();
 	}
 } else {
-	ez_accessibility_uninstall_site();
+	incluaccess_uninstall_site();
 }

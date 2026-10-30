@@ -1,17 +1,17 @@
 <p align="center">
-  <img src=".wordpress-org/banner-1544x500.png" alt="EZ Accessibility" width="772">
+  <img src=".wordpress-org/banner-1544x500.png" alt="IncluAccess – Accessibility Toolbar" width="772">
 </p>
 
 <p align="center">
   A lightweight accessibility toolbar for WordPress.<br>
-  By <a href="https://greyteck.site">Greyteck Studios</a> · <a href="https://www.greyteck.site/products/ez-accessibility/">Plugin page</a>
+  By <a href="https://greyteck.site">Greyteck Studios</a> · <a href="https://www.greyteck.site/products/incluaccess/">Plugin page</a>
 </p>
 
 ---
 
-<img src=".wordpress-org/screenshot-1.png" alt="The EZ Accessibility panel open on a website" width="300" align="right">
+<img src=".wordpress-org/screenshot-1.png" alt="The IncluAccess panel open on a website" width="300" align="right">
 
-EZ Accessibility adds a small button to the corner of your site. Visitors open it to adjust the page to how they read best, and their choices are remembered on their next visit.
+IncluAccess adds a small button to the corner of your site. Visitors open it to adjust the page to how they read best, and their choices are remembered on their next visit.
 
 **What visitors can change**
 
@@ -37,7 +37,7 @@ The panel is rendered inside a Shadow DOM, so your theme's CSS can't break it an
 
 ## Settings
 
-Open **EZ Accessibility** in the WordPress admin sidebar. Every change shows up in a live preview before you save.
+Open **IncluAccess** in the WordPress admin sidebar. Every change shows up in a live preview before you save.
 
 | Section | What you can do |
 | --- | --- |
@@ -53,7 +53,7 @@ The panel picks its language from the page's `lang` attribute and uses the close
 
 Using a language that isn't listed? Add it under **Languages → Add language** with its code (for example `sw`), a name and its direction, then type your labels. Right-to-left pages mirror the button and panel automatically.
 
-Built-in labels live in [`assets/js/eza-i18n.js`](assets/js/eza-i18n.js), a static file browsers cache. Only the labels you change are added to each page.
+Built-in labels live in [`assets/js/inclu-i18n.js`](assets/js/inclu-i18n.js), a static file browsers cache. Only the labels you change are added to each page.
 
 ### Custom button icon
 
@@ -73,14 +73,14 @@ Choose **Your image** under **Appearance → Button icon** to upload or pick an 
 
 ## Installation
 
-**From WordPress.org:** go to **Plugins → Add New**, search for "EZ Accessibility", install and activate.
+**From WordPress.org:** go to **Plugins → Add New**, search for "IncluAccess", install and activate.
 
 **From source:**
 
 ```bash
-git clone https://github.com/shauryamohan20/Accessibility-Plugin.git ez-accessibility
-cd ez-accessibility
-git archive --format=zip --prefix=ez-accessibility/ -o ../ez-accessibility.zip HEAD
+git clone https://github.com/shauryamohan20/Accessibility-Plugin.git incluaccess
+cd incluaccess
+git archive --format=zip --prefix=incluaccess/ -o ../incluaccess.zip HEAD
 ```
 
 Then upload the zip under **Plugins → Add New → Upload Plugin**. `.gitattributes` keeps development-only files (this README, `.wordpress-org/` and so on) out of the zip.
@@ -88,25 +88,25 @@ Then upload the zip under **Plugins → Add New → Upload Plugin**. `.gitattrib
 ## JavaScript API
 
 ```js
-window.EZAccessibility.open()     // Open the panel
-window.EZAccessibility.close()    // Close the panel
-window.EZAccessibility.toggle()   // Toggle open/closed
-window.EZAccessibility.reset()    // Reset every adjustment
-window.EZAccessibility.refresh()  // Re-detect the language after a multilingual plugin switches it
+window.IncluAccess.open()     // Open the panel
+window.IncluAccess.close()    // Close the panel
+window.IncluAccess.toggle()   // Toggle open/closed
+window.IncluAccess.reset()    // Reset every adjustment
+window.IncluAccess.refresh()  // Re-detect the language after a multilingual plugin switches it
 ```
 
 ## Project layout
 
 ```
-ez-accessibility.php                        Plugin header, bootstrap, migration
-uninstall.php                               Removes settings (all sites on multisite)
-includes/class-ez-accessibility-settings.php  Admin page, saving and validation
-includes/class-ez-accessibility-frontend.php  Loads the widget where it should appear
-assets/js/eza-frontend.js                   Visitor widget (Shadow DOM)
-assets/js/eza-i18n.js                       Built-in translations
-assets/js/eza-admin.js                      Settings page
-assets/css/                                 Widget, page-feature and admin styles
-.wordpress-org/                             Icon, banners and screenshots for the plugin directory
+incluaccess.php                         Plugin header, bootstrap, migration
+uninstall.php                           Removes settings (all sites on multisite)
+includes/class-incluaccess-settings.php Admin page, saving and validation
+includes/class-incluaccess-frontend.php Loads the widget where it should appear
+assets/js/inclu-frontend.js             Visitor widget (Shadow DOM)
+assets/js/inclu-i18n.js                 Built-in translations
+assets/js/inclu-admin.js                Settings page
+assets/css/                             Widget, page-feature and admin styles
+.wordpress-org/                         Icon, banners and screenshots for the plugin directory
 ```
 
 ## Publishing to WordPress.org
@@ -117,11 +117,11 @@ The WordPress.org listing is generated from [`readme.txt`](readme.txt), so keep 
 | --- | --- |
 | `icon-128x128.png`, `icon-256x256.png` | Plugin icon in the directory and in wp-admin search results |
 | `banner-772x250.png`, `banner-1544x500.png` | Header banner on the plugin page (normal and high-DPI) |
-| `screenshot-1.png` | First screenshot on the plugin page |
+| `screenshot-1.png`, `screenshot-2.png` | Screenshots on the plugin page (visitor panel, settings page) |
 
-## Upgrading from Qudra AccessKit
+## Upgrading from earlier versions
 
-Settings saved by the old plugin are carried over automatically the first time EZ Accessibility loads.
+IncluAccess was previously developed as "EZ Accessibility" and, before that, "Qudra AccessKit". Settings saved by either are carried over automatically the first time IncluAccess loads.
 
 ## License
 

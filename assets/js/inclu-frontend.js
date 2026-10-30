@@ -1,23 +1,23 @@
 /**
- * EZ Accessibility — Frontend JS
- * Namespace: EZAccessibility
+ * IncluAccess — Frontend JS
+ * Namespace: IncluAccess
  * No dependencies. Vanilla JS only.
  *
  * The widget UI is rendered inside a Shadow DOM so theme CSS can't style it.
- * Page adjustments are applied as classes on <html> (see eza-frontend.css).
+ * Page adjustments are applied as classes on <html> (see inclu-frontend.css).
  */
 (function () {
   'use strict';
 
   // ── Guard ──────────────────────────────────────────────────────────────────
-  if (typeof EZAccessibilityConfig === 'undefined' || window.EZAccessibility) return;
+  if (typeof IncluAccessConfig === 'undefined' || window.IncluAccess) return;
 
-  const CFG  = EZAccessibilityConfig;
+  const CFG  = IncluAccessConfig;
   const HTML = document.documentElement;
 
   // ── Storage helpers (validated, never trusts raw values) ──────────────────
   const LS = {
-    PREFIX: 'ez_accessibility_',
+    PREFIX: 'incluaccess_',
     KEYS: [
       'fontStep', 'highContrast', 'invert', 'grayscale',
       'highlightLinks', 'readableFont', 'letterStep',
@@ -48,9 +48,9 @@
   }
 
   // ── Language ──────────────────────────────────────────────────────────────
-  // Built-in labels come from eza-i18n.js; CFG.strings holds the site owner's
+  // Built-in labels come from inclu-i18n.js; CFG.strings holds the site owner's
   // overrides and custom languages (CFG.custom maps code → direction).
-  const I18N      = window.EZAccessibilityI18n || { KEYS: [], langs: {}, candidates: function () { return []; } };
+  const I18N      = window.IncluAccessI18n || { KEYS: [], langs: {}, candidates: function () { return []; } };
   const OVERRIDES = CFG.strings || {};
   const CUSTOM    = CFG.custom || {};
 
@@ -164,13 +164,13 @@
 
   // Toggle features → <html> class
   const TOGGLES = {
-    highContrast:   { cls: 'eza-high-contrast',   icon: 'contrast', label: 'high_contrast',   group: 'visual'  },
-    invert:         { cls: 'eza-invert',          icon: 'invert',   label: 'invert',          group: 'visual'  },
-    grayscale:      { cls: 'eza-grayscale',       icon: 'drop',     label: 'grayscale',       group: 'visual'  },
-    highlightLinks: { cls: 'eza-highlight-links', icon: 'link',     label: 'highlight_links', group: 'reading' },
+    highContrast:   { cls: 'inclu-high-contrast',   icon: 'contrast', label: 'high_contrast',   group: 'visual'  },
+    invert:         { cls: 'inclu-invert',          icon: 'invert',   label: 'invert',          group: 'visual'  },
+    grayscale:      { cls: 'inclu-grayscale',       icon: 'drop',     label: 'grayscale',       group: 'visual'  },
+    highlightLinks: { cls: 'inclu-highlight-links', icon: 'link',     label: 'highlight_links', group: 'reading' },
     readableFont:   { cls: null,                  icon: 'type',     label: 'readable_font',   group: 'reading' },
-    pauseAnim:      { cls: 'eza-pause-anim',      icon: 'pause',    label: 'pause_anim',      group: 'motion'  },
-    largeCursor:    { cls: 'eza-large-cursor',    icon: 'cursor',   label: 'large_cursor',    group: 'motion'  }
+    pauseAnim:      { cls: 'inclu-pause-anim',      icon: 'pause',    label: 'pause_anim',      group: 'motion'  },
+    largeCursor:    { cls: 'inclu-large-cursor',    icon: 'cursor',   label: 'large_cursor',    group: 'motion'  }
   };
 
   function enabled(feature) {
@@ -214,22 +214,22 @@
     const all = document.body ? document.body.getElementsByTagName('*') : [];
     for (let i = 0; i < all.length; i++) {
       const el = all[i];
-      if (!FONT_TAGS.has(el.tagName) || el.hasAttribute('data-eza-fspx')) continue;
+      if (!FONT_TAGS.has(el.tagName) || el.hasAttribute('data-inclu-fspx')) continue;
       const px = parseFloat(getComputedStyle(el).fontSize);
       if (isNaN(px) || px <= 0) continue;
-      el.setAttribute('data-eza-fs', el.style.fontSize || '');
-      el.setAttribute('data-eza-fspx', String(px));
+      el.setAttribute('data-inclu-fs', el.style.fontSize || '');
+      el.setAttribute('data-inclu-fspx', String(px));
     }
   }
 
   function applyFontSize() {
     if (state.fontStep === 0) {
-      document.querySelectorAll('[data-eza-fspx]').forEach(function (el) {
-        const orig = el.getAttribute('data-eza-fs');
+      document.querySelectorAll('[data-inclu-fspx]').forEach(function (el) {
+        const orig = el.getAttribute('data-inclu-fs');
         if (orig === '') el.style.removeProperty('font-size');
         else el.style.fontSize = orig;
-        el.removeAttribute('data-eza-fs');
-        el.removeAttribute('data-eza-fspx');
+        el.removeAttribute('data-inclu-fs');
+        el.removeAttribute('data-inclu-fspx');
       });
       HTML.style.removeProperty('font-size');
       return;
@@ -238,19 +238,19 @@
     captureFontOriginals();
     const scale = fontScale();
     HTML.style.fontSize = (naturalFontSize * scale) + 'px'; // rem-based designs
-    document.querySelectorAll('[data-eza-fspx]').forEach(function (el) {
-      const origPx = parseFloat(el.getAttribute('data-eza-fspx'));
+    document.querySelectorAll('[data-inclu-fspx]').forEach(function (el) {
+      const origPx = parseFloat(el.getAttribute('data-inclu-fspx'));
       if (!isNaN(origPx)) el.style.fontSize = (origPx * scale) + 'px';
     });
   }
 
   function applyReadableFont() {
-    HTML.classList.toggle('eza-readable-font', state.readableFont && enabled('readableFont'));
+    HTML.classList.toggle('inclu-readable-font', state.readableFont && enabled('readableFont'));
   }
 
   function applyLetterSpacing() {
-    HTML.classList.remove('eza-letter-1', 'eza-letter-2', 'eza-letter-3');
-    if (state.letterStep > 0 && enabled('letterSpacing')) HTML.classList.add('eza-letter-' + state.letterStep);
+    HTML.classList.remove('inclu-letter-1', 'inclu-letter-2', 'inclu-letter-3');
+    if (state.letterStep > 0 && enabled('letterSpacing')) HTML.classList.add('inclu-letter-' + state.letterStep);
   }
 
   function applyAllStates() {
@@ -274,7 +274,7 @@
 
   function buildShell() {
     host = document.createElement('div');
-    host.id = 'eza-root';
+    host.id = 'inclu-root';
     host.style.visibility = 'hidden'; // until our stylesheet loads
     shadow = host.attachShadow({ mode: 'open' });
 
@@ -293,18 +293,18 @@
     trigger.appendChild(buttonIcon());
     trigger.type = 'button';
     trigger.setAttribute('aria-expanded', 'false');
-    trigger.setAttribute('aria-controls', 'eza-panel');
+    trigger.setAttribute('aria-controls', 'inclu-panel');
     badge = el('span', 'badge');
     badge.setAttribute('aria-hidden', 'true');
     badge.hidden = true;
     trigger.appendChild(badge);
 
     panel = el('div', 'panel');
-    panel.id = 'eza-panel';
+    panel.id = 'inclu-panel';
     panel.hidden = true;
     panel.setAttribute('role', 'dialog');
     panel.setAttribute('aria-modal', 'false');
-    panel.setAttribute('aria-labelledby', 'eza-title');
+    panel.setAttribute('aria-labelledby', 'inclu-title');
 
     live = el('div', 'sr-only');
     live.setAttribute('aria-live', 'polite');
@@ -367,7 +367,7 @@
     mark.appendChild(buttonIcon());
     head.appendChild(mark);
     const title = el('h2', 'title');
-    title.id = 'eza-title';
+    title.id = 'inclu-title';
     title.textContent = t('panel_title');
     head.appendChild(title);
     const closeBtn = el('button', 'close', svg('close'));
@@ -471,7 +471,7 @@
     head.appendChild(el('span', 'tile-icon', svg(o.icon, 1.9)));
     const label = el('span', 'tile-label');
     label.textContent = o.label;
-    label.id = 'eza-lbl-' + o.key;
+    label.id = 'inclu-lbl-' + o.key;
     head.appendChild(label);
     const val = el('span', 'stepper-val');
     val.setAttribute('aria-hidden', 'true');
@@ -623,7 +623,7 @@
   }
 
   // ── Public API ────────────────────────────────────────────────────────────
-  window.EZAccessibility = {
+  window.IncluAccess = {
     open:   openPanel,
     close:  function () { closePanel(false); },
     toggle: togglePanel,

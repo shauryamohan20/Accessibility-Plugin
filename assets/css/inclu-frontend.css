@@ -1,12 +1,12 @@
 /*
- * EZ Accessibility — Page Feature Styles
+ * IncluAccess — Page Feature Styles
  * Applied via classes on <html>. The widget UI itself lives in a Shadow DOM
- * (see eza-widget.css), so document selectors never reach it.
- * All classes prefixed with .eza- to prevent conflicts.
+ * (see inclu-widget.css), so document selectors never reach it.
+ * All classes prefixed with .inclu- to prevent conflicts.
  */
 
 /* ── Widget host ────────────────────────────────────────────────────────── */
-#eza-root {
+#inclu-root {
   position: fixed;
   width: 0;
   height: 0;
@@ -17,12 +17,12 @@
 }
 
 /* ── High Contrast ──────────────────────────────────────────────────────── */
-html.eza-high-contrast,
-html.eza-high-contrast body {
+html.inclu-high-contrast,
+html.inclu-high-contrast body {
   background-color: #000 !important;
   color: #fff !important;
 }
-html.eza-high-contrast *:not(#eza-root) {
+html.inclu-high-contrast *:not(#inclu-root) {
   background-color: #000 !important;
   background-image: none !important;
   color: #fff !important;
@@ -31,32 +31,32 @@ html.eza-high-contrast *:not(#eza-root) {
   text-shadow: none !important;
   box-shadow: none !important;
 }
-html.eza-high-contrast a,
-html.eza-high-contrast a * {
+html.inclu-high-contrast a,
+html.inclu-high-contrast a * {
   color: #ff0 !important;
 }
-html.eza-high-contrast a { text-decoration: underline !important; }
-html.eza-high-contrast img,
-html.eza-high-contrast video {
+html.inclu-high-contrast a { text-decoration: underline !important; }
+html.inclu-high-contrast img,
+html.inclu-high-contrast video {
   filter: contrast(1.2) brightness(.9);
 }
 
 /* ── Invert / Grayscale (combinable) ────────────────────────────────────── */
-html.eza-invert                { filter: invert(1) hue-rotate(180deg); }
-html.eza-grayscale             { filter: grayscale(1); }
-html.eza-invert.eza-grayscale  { filter: invert(1) hue-rotate(180deg) grayscale(1); }
+html.inclu-invert                { filter: invert(1) hue-rotate(180deg); }
+html.inclu-grayscale             { filter: grayscale(1); }
+html.inclu-invert.inclu-grayscale  { filter: invert(1) hue-rotate(180deg) grayscale(1); }
 
 /* Keep media and the widget looking natural while inverted */
-html.eza-invert img,
-html.eza-invert video,
-html.eza-invert picture,
-html.eza-invert iframe,
-html.eza-invert #eza-root {
+html.inclu-invert img,
+html.inclu-invert video,
+html.inclu-invert picture,
+html.inclu-invert iframe,
+html.inclu-invert #inclu-root {
   filter: invert(1) hue-rotate(180deg);
 }
 
 /* ── Highlight Links ────────────────────────────────────────────────────── */
-html.eza-highlight-links a {
+html.inclu-highlight-links a {
   outline: 2px solid #e85d00 !important;
   outline-offset: 2px !important;
   text-decoration: underline !important;
@@ -64,8 +64,8 @@ html.eza-highlight-links a {
   text-underline-offset: 3px !important;
   border-radius: 2px;
 }
-html.eza-highlight-links a:hover,
-html.eza-highlight-links a:focus {
+html.inclu-highlight-links a:hover,
+html.inclu-highlight-links a:focus {
   background-color: #fff3cd !important;
   color: #1a1a1a !important;
 }
@@ -77,20 +77,20 @@ html.eza-highlight-links a:focus {
  * legible faces up front, while right-to-left scripts, Thai, Indic and CJK text
  * falls through to Tahoma / the clean system UI font for that script.
  */
-html.eza-readable-font *:not(#eza-root):not(i):not([class*="icon"]):not([class*="fa-"]) {
+html.inclu-readable-font *:not(#inclu-root):not(i):not([class*="icon"]):not([class*="fa-"]) {
   font-family: "Atkinson Hyperlegible", Verdana, Tahoma, "Segoe UI", system-ui, -apple-system, Arial, sans-serif !important;
 }
-html.eza-readable-font body { line-height: 1.6 !important; word-spacing: .08em !important; }
+html.inclu-readable-font body { line-height: 1.6 !important; word-spacing: .08em !important; }
 
 /* ── Letter Spacing ─────────────────────────────────────────────────────── */
-html.eza-letter-1 *:not(#eza-root) { letter-spacing: .05em !important; }
-html.eza-letter-2 *:not(#eza-root) { letter-spacing: .10em !important; }
-html.eza-letter-3 *:not(#eza-root) { letter-spacing: .16em !important; }
+html.inclu-letter-1 *:not(#inclu-root) { letter-spacing: .05em !important; }
+html.inclu-letter-2 *:not(#inclu-root) { letter-spacing: .10em !important; }
+html.inclu-letter-3 *:not(#inclu-root) { letter-spacing: .16em !important; }
 
 /* ── Pause Animations ───────────────────────────────────────────────────── */
-html.eza-pause-anim *:not(#eza-root),
-html.eza-pause-anim *::before,
-html.eza-pause-anim *::after {
+html.inclu-pause-anim *:not(#inclu-root),
+html.inclu-pause-anim *::before,
+html.inclu-pause-anim *::after {
   animation-play-state: paused !important;
   animation-duration: .001ms !important;
   animation-iteration-count: 1 !important;
@@ -99,13 +99,13 @@ html.eza-pause-anim *::after {
 }
 
 /* ── Large Cursor ───────────────────────────────────────────────────────── */
-html.eza-large-cursor,
-html.eza-large-cursor * {
+html.inclu-large-cursor,
+html.inclu-large-cursor * {
   cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 32 32'%3E%3Cpath d='M7 3 L7 26 L12.5 20.5 L16.5 29 L20.5 27.3 L16.6 19 L24 19 Z' fill='black' stroke='white' stroke-width='1.6' stroke-linejoin='round'/%3E%3C/svg%3E") 9 4, auto !important;
 }
-html.eza-large-cursor a,
-html.eza-large-cursor a *,
-html.eza-large-cursor button,
-html.eza-large-cursor [role="button"] {
+html.inclu-large-cursor a,
+html.inclu-large-cursor a *,
+html.inclu-large-cursor button,
+html.inclu-large-cursor [role="button"] {
   cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 32 32'%3E%3Cpath d='M12 14V5.5a2 2 0 0 1 4 0V13l1-.2a2 2 0 0 1 2.3 1.6l.2-.1a2 2 0 0 1 2.5 1.3 2 2 0 0 1 2.6 1.6l.4 4.3c.3 3.6-2.2 6.5-5.8 6.5h-2.6c-2 0-3.7-1-4.8-2.6L7.4 19a2 2 0 0 1 3.3-2.3L12 18.5z' fill='black' stroke='white' stroke-width='1.6' stroke-linejoin='round'/%3E%3C/svg%3E") 14 4, pointer !important;
 }

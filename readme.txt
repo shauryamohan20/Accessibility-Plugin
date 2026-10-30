@@ -1,4 +1,4 @@
-=== EZ Accessibility ===
+=== IncluAccess – Accessibility Toolbar ===
 Contributors: stratoshades01
 Tags: accessibility, a11y, wcag, multilingual, rtl
 Requires at least: 6.5
@@ -12,7 +12,7 @@ A lightweight accessibility toolbar for your visitors: text size, contrast, read
 
 == Description ==
 
-EZ Accessibility adds a small, friendly accessibility button to your site. Visitors open it to adjust the page to how they read best, and their choices are remembered on their next visit.
+IncluAccess adds a small, friendly accessibility button to your site. Visitors open it to adjust the page to how they read best, and their choices are remembered on their next visit.
 
 It is fast, has no frontend dependencies, makes no external requests, and is built so your theme's styles can never break the panel.
 
@@ -52,11 +52,11 @@ It is fast, has no frontend dependencies, makes no external requests, and is bui
 
 Control the panel from your theme:
 
-`window.EZAccessibility.open()`
-`window.EZAccessibility.close()`
-`window.EZAccessibility.toggle()`
-`window.EZAccessibility.reset()`
-`window.EZAccessibility.refresh()`
+`window.IncluAccess.open()`
+`window.IncluAccess.close()`
+`window.IncluAccess.toggle()`
+`window.IncluAccess.reset()`
+`window.IncluAccess.refresh()`
 
 Call `refresh()` after a multilingual plugin switches the page language.
 
@@ -66,13 +66,13 @@ An accessibility toolbar helps visitors customize their experience, but it does 
 
 = About =
 
-EZ Accessibility is made by [Greyteck Studios](https://greyteck.site). Learn more on the [EZ Accessibility page](https://www.greyteck.site/products/ez-accessibility/).
+IncluAccess is made by [Greyteck Studios](https://greyteck.site). Learn more on the [IncluAccess page](https://www.greyteck.site/products/incluaccess/).
 
 == Installation ==
 
-1. In your dashboard go to **Plugins → Add New**, search for "EZ Accessibility" and click **Install Now**. Or upload the plugin zip from **Plugins → Add New → Upload Plugin**.
+1. In your dashboard go to **Plugins → Add New**, search for "IncluAccess" and click **Install Now**. Or upload the plugin zip from **Plugins → Add New → Upload Plugin**.
 2. Click **Activate**.
-3. Open **EZ Accessibility** in the admin sidebar to pick your colors, position and tools.
+3. Open **IncluAccess** in the admin sidebar to pick your colors, position and tools.
 
 == Frequently Asked Questions ==
 
@@ -98,7 +98,7 @@ It reads the `lang` attribute of your page and uses the closest match, so `pt-BR
 
 = My language isn't listed. Can I add it? =
 
-Yes. Go to **EZ Accessibility → Languages → Add language**, enter the language code your pages use (for example `sw` for Swahili), its name and whether it reads left-to-right or right-to-left, then type your labels. You can also add a regional version, like `pt-br`, which takes priority over the general one.
+Yes. Go to **IncluAccess → Languages → Add language**, enter the language code your pages use (for example `sw` for Swahili), its name and whether it reads left-to-right or right-to-left, then type your labels. You can also add a regional version, like `pt-br`, which takes priority over the general one.
 
 = Can I hide it on some pages? =
 

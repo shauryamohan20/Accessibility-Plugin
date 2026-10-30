@@ -1,8 +1,8 @@
 <?php
 /**
- * EZ_Accessibility_Frontend
+ * IncluAccess_Frontend
  * Loads the floating accessibility button and panel on the frontend.
- * The widget itself is built by eza-frontend.js inside a Shadow DOM so
+ * The widget itself is built by inclu-frontend.js inside a Shadow DOM so
  * theme styles can never leak into it.
  */
 
@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class EZ_Accessibility_Frontend {
+class IncluAccess_Frontend {
 
 	public static function init(): void {
 		add_action( 'wp_enqueue_scripts', [ __CLASS__, 'enqueue_assets' ] );
@@ -18,7 +18,7 @@ class EZ_Accessibility_Frontend {
 
 	// ── Check if widget should be shown on current page ───────────────────────
 	private static function is_excluded(): bool {
-		$s    = EZ_Accessibility_Settings::get();
+		$s    = IncluAccess_Settings::get();
 		$mode = $s['visibility_mode'] ?? 'all';
 
 		if ( 'all' === $mode ) {
@@ -47,25 +47,25 @@ class EZ_Accessibility_Frontend {
 			return;
 		}
 
-		$s = EZ_Accessibility_Settings::get();
+		$s = IncluAccess_Settings::get();
 
 		// Page-level feature styles (contrast, fonts, spacing…).
-		wp_enqueue_style( 'ez-accessibility-frontend', EZ_ACCESSIBILITY_URL . 'assets/css/eza-frontend.css', [], EZ_ACCESSIBILITY_VERSION );
+		wp_enqueue_style( 'incluaccess-frontend', INCLUACCESS_URL . 'assets/css/inclu-frontend.css', [], INCLUACCESS_VERSION );
 
 		// Built-in translations live in a static, cacheable file; only overrides are inlined.
-		wp_enqueue_script( 'ez-accessibility-i18n', EZ_ACCESSIBILITY_URL . 'assets/js/eza-i18n.js', [], EZ_ACCESSIBILITY_VERSION, true );
-		wp_enqueue_script( 'ez-accessibility-frontend', EZ_ACCESSIBILITY_URL . 'assets/js/eza-frontend.js', [ 'ez-accessibility-i18n' ], EZ_ACCESSIBILITY_VERSION, true );
+		wp_enqueue_script( 'incluaccess-i18n', INCLUACCESS_URL . 'assets/js/inclu-i18n.js', [], INCLUACCESS_VERSION, true );
+		wp_enqueue_script( 'incluaccess-frontend', INCLUACCESS_URL . 'assets/js/inclu-frontend.js', [ 'incluaccess-i18n' ], INCLUACCESS_VERSION, true );
 
 		$features = [];
-		foreach ( array_keys( EZ_Accessibility_Settings::features() ) as $key ) {
+		foreach ( array_keys( IncluAccess_Settings::features() ) as $key ) {
 			// feat_font_size → fontSize
 			$js_key              = lcfirst( str_replace( ' ', '', ucwords( str_replace( '_', ' ', substr( $key, 5 ) ) ) ) );
 			$features[ $js_key ] = (bool) $s[ $key ];
 		}
 
 		// Button icon: a built-in key, or a custom image that is still a valid attachment.
-		$icon     = array_key_exists( $s['btn_icon'], EZ_Accessibility_Settings::button_icons() ) ? $s['btn_icon'] : 'person';
-		$icon_url = 'custom' === $s['btn_icon'] ? EZ_Accessibility_Settings::custom_icon_url( (int) $s['btn_custom_icon'] ) : '';
+		$icon     = array_key_exists( $s['btn_icon'], IncluAccess_Settings::button_icons() ) ? $s['btn_icon'] : 'person';
+		$icon_url = 'custom' === $s['btn_icon'] ? IncluAccess_Settings::custom_icon_url( (int) $s['btn_custom_icon'] ) : '';
 
 		$custom = [];
 		foreach ( $s['custom_langs'] as $code => $meta ) {
@@ -73,7 +73,7 @@ class EZ_Accessibility_Frontend {
 		}
 
 		// Passed to JS via localization (safe, escaped by wp_json_encode internally).
-		wp_localize_script( 'ez-accessibility-frontend', 'EZAccessibilityConfig', [
+		wp_localize_script( 'incluaccess-frontend', 'IncluAccessConfig', [
 			'position' => $s['btn_position'],
 			'offset'   => absint( $s['btn_offset'] ),
 			'btnBg'    => $s['btn_bg_color'],
@@ -82,7 +82,7 @@ class EZ_Accessibility_Frontend {
 			'icon'     => $icon,
 			'iconUrl'  => $icon_url, // custom image, already validated; '' otherwise
 			'zIndex'   => absint( $s['z_index'] ),
-			'cssUrl'   => add_query_arg( 'ver', EZ_ACCESSIBILITY_VERSION, EZ_ACCESSIBILITY_URL . 'assets/css/eza-widget.css' ),
+			'cssUrl'   => add_query_arg( 'ver', INCLUACCESS_VERSION, INCLUACCESS_URL . 'assets/css/inclu-widget.css' ),
 			'features' => $features,
 			'fallback' => $s['fallback_lang'],
 			'custom'   => (object) $custom,      // code => dir
